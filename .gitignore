@@ -13,3 +13,9 @@ www/lib
 .editorconfig
 .bowerrc
 jsconfig.json
+
+# platform specific files. we however include the resource top level
+# as it may contain the app icon. the sub folders are ignored
+platforms
+resources/android
+resources/ios
