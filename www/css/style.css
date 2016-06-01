@@ -1,1 +1,15 @@
-/* Empty. Add your own CSS if you like */
+.no-padding {
+  padding: 0px !important;
+}
+.task-points-small {
+  font-size: 11px !important;
+  text-align: center;
+}
+.task-header-block {
+  font-size: 110%;
+  background-color: #eeeeee;
+  padding: 3px 5px;
+}
+.task-complete {
+  text-decoration: line-through;
+}

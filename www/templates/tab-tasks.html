@@ -1,0 +1,35 @@
+<ion-view view-title="Tasks">
+
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-icon ion-plus" ng-click="taskCtrl.newTask()"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-list>
+      <div class="row row-no-padding item" ng-repeat="task in taskCtrl.chores">
+        
+        <!-- Check box 20% on left -->
+        <div class="col col-20 item-borderless">
+          <ion-item class="item-borderless">
+            <ion-checkbox class="item-borderless" ng-model="task.completed"></ion-checkbox>
+            <p class="task-points-small">{{task.points}} pts</p>
+          </ion-item>
+        </div>
+
+        <!-- List item 80% with task data, slide to delete and click to view -->
+        <div class="col col-80 item-borderless">
+          <ion-item class="item-remove-animate item-borderless item-avatar-right item-icon-right" type="item-text-wrap" href="#/tab/tasks/{{task.id}}">
+            <img ng-src="{{task.img}}">
+            <h2 ng-class="{'task-complete': task.completed}">{{task.name}}</h2>
+            <p>{{task.note}}</p>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+
+            <ion-option-button class="button-assertive" ng-click="taskCtrl.remove(task)">
+              Delete
+            </ion-option-button>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>
