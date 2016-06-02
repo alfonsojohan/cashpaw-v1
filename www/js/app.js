@@ -96,6 +96,11 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.service.analytic
       }
     }
   })
+  
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/register.html',
+  })
   ;  
 
   // if none of the above states are matched, use this as the fallback

@@ -1,6 +1,43 @@
 angular.module('starter.controllers', [])
-
-  .controller('DashCtrl', function ($scope) { })
+  
+  .controller('AuthCtrl', function () {
+  
+    console.log('in AuthCtrl');
+    
+      
+  })
+  
+  .controller('DashCtrl', function ($scope, $state) {
+    
+    this.uid = null;
+    this.pwd = null;
+    
+    /**
+     * Facebook Login test
+     */
+    this.fbLogin = function () {
+     $state.go('register');
+    };
+    
+    this.register = function () {
+      console.log('uid: ', this.uid, 'pwd:', this.pwd);
+      
+      var details = {
+        'email': this.uid,
+        'password': this.pwd
+      };
+      
+      Ionic.Auth.signup(details).then({
+        function() {
+          window.alert('sucess');
+        },
+        function () {
+          window.alert('fail');
+        }
+      });
+    };
+    
+   })
 
   .controller('TasksCtrl', function ($scope, $state, $stateParams, $ionicHistory, Chats, Chores) {
 

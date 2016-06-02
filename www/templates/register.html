@@ -1,0 +1,22 @@
+<ion-nav-view name="register">
+  <ion-view hide-nav-bar="true">
+    <ion-content class="row-no-padding">
+
+      <div class="padding">
+        <h1>Login Test</h1>
+
+        <label class="item item-input">
+        <input type="text" placeholder="Email" ng-model="dashCtrl.uid"></input>
+      </label>
+
+        <label class="item item-input">
+        <input type="text" placeholder="password" ng-model="dashCtrl.pwd"></input>
+      </label>
+      </div>
+
+      <button class="button button-block" ng-click="dashCtrl.register()">Login</button>
+      <button class="button button-block" ng-click="dashCtrl.register()">New User? Register Now!</button>
+
+    </ion-content>
+  </ion-view>
+</ion-nav-view>
