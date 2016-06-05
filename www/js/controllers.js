@@ -1,45 +1,43 @@
 angular.module('starter.controllers', [])
-  
+
   .controller('AuthCtrl', function () {
-  
+
     console.log('in AuthCtrl');
-    
-      
+
+
   })
-  
+
   .controller('DashCtrl', function ($scope, $state) {
-    
+
     this.uid = null;
     this.pwd = null;
-    
+
     /**
      * Facebook Login test
      */
     this.fbLogin = function () {
-     $state.go('register');
+      $state.go('register');
     };
-    
+
     this.register = function () {
       console.log('uid: ', this.uid, 'pwd:', this.pwd);
-      
+
       var details = {
         'email': this.uid,
         'password': this.pwd
       };
-      
-      Ionic.Auth.signup(details).then({
-        function() {
-          window.alert('sucess');
-        },
-        function () {
-          window.alert('fail');
-        }
-      });
-    };
-    
-   })
 
-  .controller('TasksCtrl', function ($scope, $state, $stateParams, $ionicHistory, Chats, Chores) {
+    };
+
+  })
+
+  .controller('TasksCtrl', function (
+    $scope,
+    $state,
+    $stateParams,
+    $ionicHistory,
+    ionicDatePicker,
+    Chores) {
 
     console.log('in TasksCtrl', $stateParams);
 
@@ -55,7 +53,7 @@ angular.module('starter.controllers', [])
     };
 
     this.chores = null;
-    
+
     this.task = {
       category: "Nothing here yet...",
       categoryImg: "img/smiley-flat.png",
@@ -67,6 +65,9 @@ angular.module('starter.controllers', [])
       points: 0,
     };
 
+    /**
+     * Set the initial processing of the controller based on the ui state
+     */
     if ($state.is('tab.tasks')) {
       //  this.chats = Chats.all();
       this.chores = Chores.all();
@@ -92,11 +93,17 @@ angular.module('starter.controllers', [])
       // this.originalTask = angular.copy(this.task);
     }
 
+    /**
+     * Delete task
+     */
     this.remove = function (chat) {
       console.log('in TasksCtrl.remove');
       Chores.remove(chat);
     };
 
+    /**
+     * Delete task from new-task view
+     */
     this.removeFromDetailView = function (task) {
       console.log('in TasksCtrl.removeFromDetailView');
 
@@ -107,16 +114,25 @@ angular.module('starter.controllers', [])
       });
     };
 
+    /**
+     * User completed task by clicking on check box
+     */
     this.onCheckChange = function (id) {
       console.log('in onCheckChange. Id: ', id);
     };
 
+    /**
+     * Create new task button action
+     */
     this.newTask = function () {
       console.log('in TasksCtrl.newTask');
 
       $state.go('tab.new-task');
     };
 
+    /**
+     * Cancel new / edit task 
+     */
     this.cancel = function () {
 
       // Restore the task object
@@ -128,6 +144,9 @@ angular.module('starter.controllers', [])
       });
     };
 
+    /**
+     * Save new / edited task
+     */
     this.saveTask = function () {
       console.log('in NewTaskCtrl.saveTask');
 
@@ -135,6 +154,29 @@ angular.module('starter.controllers', [])
         location: "replace"
       });
     };
+
+    /**
+     * Show date selector
+     */
+    this.selectDate = function (model) {
+
+      console.log('in selectDate');
+
+      var ipObj1 = {
+        callback: function (val) {  //Mandatory
+          console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+        },
+        from: new Date(), //Optional
+      to: new Date(2018, 1, 1), //Optional
+      inputDate: new Date(),      //Optional
+      mondayFirst: true,          //Optional
+      //disableWeekdays: [0],       //Optional
+      closeOnSelect: true,       //Optional
+      templateType: 'popup'       //Optiona
+      };
+
+      ionicDatePicker.openDatePicker(ipObj1);
+    }
   })
 
   .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {

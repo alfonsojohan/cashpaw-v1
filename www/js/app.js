@@ -1,6 +1,13 @@
 // Ionic Starter App
 
-angular.module('starter', ['ionic','ionic.service.core', 'ionic.service.analytics', 'monospaced.elastic', 'starter.controllers', 'starter.services'])
+angular.module('starter', [
+  'ionic',
+  'ionic.service.core', 
+  'ionic.service.analytics', 
+  'monospaced.elastic', 
+  'starter.controllers', 
+  'starter.services',
+  'ionic-datepicker'])
 
 /**
  * Taken from: http://rubberchickin.com/how-to-hide-specific-ionic-tabs-in-angular/
