@@ -1,10 +1,7 @@
 angular.module('starter.controllers', [])
 
   .controller('AuthCtrl', function () {
-
     console.log('in AuthCtrl');
-
-
   })
 
   .controller('DashCtrl', function ($scope, $state) {
@@ -34,23 +31,27 @@ angular.module('starter.controllers', [])
   .controller('TasksCtrl', function (
     $scope,
     $state,
+    $ionicPlatform,
     $stateParams,
     $ionicHistory,
     ionicDatePicker,
-    Chores) {
+    Chores,
+    TaskService) {
 
-    console.log('in TasksCtrl', $stateParams);
+    // Keep a reference to this
+    var _that = this;
 
+    this.initDone = false;
     this.headerTitle = 'New Task';
     this.task = {};
     this.originalTask = null;
     this.edit = false;
 
-    this.labels = {
-      duration: 'How long?',
-      points: 0,
-      category: 'Nothing here...'
-    };
+    // this.labels = {
+    //   duration: 'How long?',
+    //   points: 0,
+    //   category: 'Nothing here...'
+    // };
 
     this.chores = null;
 
@@ -65,12 +66,27 @@ angular.module('starter.controllers', [])
       points: 0,
     };
 
+
     /**
      * Set the initial processing of the controller based on the ui state
      */
     if ($state.is('tab.tasks')) {
-      //  this.chats = Chats.all();
-      this.chores = Chores.all();
+      $ionicPlatform.ready(function () {
+
+        if (!_that.initDone) {
+          console.log('in TaskService.$ionicPlatform.ready');
+
+          try {
+            TaskService.initDb();
+            TaskService.all().then(function (result) {
+              _that.chores = result;
+            });
+          } catch (e) {
+            console.error(e);
+          };
+          _that.initDone = true;
+        }
+      });
 
     } else if ($state.is('tab.new-task')) {
 
@@ -83,22 +99,25 @@ angular.module('starter.controllers', [])
        * Operate on a copy of the object until the user clicks on save
        */
       this.task = Chores.get($stateParams.taskId);
+      // this.task = TaskService.get($stateParams.taskId);
       this.originalTask = angular.copy(this.task);
 
-      // this.labels.points = this.task.points;
-      // this.labels.duration = this.task.duration + ' mins';
-      // this.labels.category = this.task.category;
-
-      // this.task = Chats.get($stateParams.chatId);
-      // this.originalTask = angular.copy(this.task);
+      TaskService.get($stateParams.taskId).then(function (data) {
+        console.log('apuuu');
+        _that.task = data;
+        this.originalTask = angular.copy(data);
+      });
     }
 
     /**
      * Delete task
      */
-    this.remove = function (chat) {
-      console.log('in TasksCtrl.remove');
-      Chores.remove(chat);
+    this.remove = function (task) {
+      console.log('in TasksCtrl.remove ', task);
+      Chores.remove(task);
+      TaskService.remove(task).then(function () {
+        $state.reload();
+      });
     };
 
     /**
@@ -122,11 +141,21 @@ angular.module('starter.controllers', [])
     };
 
     /**
+     * Display task details when user click on the list item
+     */
+    this.viewTask = function (task) {
+      TaskService.get(task._id).then(function () {
+        $state.go('tab.edit-task', {
+          taskId: task._id
+        });
+      });
+    };
+
+    /**
      * Create new task button action
      */
     this.newTask = function () {
       console.log('in TasksCtrl.newTask');
-
       $state.go('tab.new-task');
     };
 
@@ -150,6 +179,8 @@ angular.module('starter.controllers', [])
     this.saveTask = function () {
       console.log('in NewTaskCtrl.saveTask');
 
+      TaskService.add(this.task);
+
       $state.go('tab.tasks', {}, {
         location: "replace"
       });
@@ -167,12 +198,12 @@ angular.module('starter.controllers', [])
           console.log('Return value from the datepicker popup is : ' + val, new Date(val));
         },
         from: new Date(), //Optional
-      to: new Date(2018, 1, 1), //Optional
-      inputDate: new Date(),      //Optional
-      mondayFirst: true,          //Optional
-      //disableWeekdays: [0],       //Optional
-      closeOnSelect: true,       //Optional
-      templateType: 'popup'       //Optiona
+        to: new Date(2018, 1, 1), //Optional
+        inputDate: new Date(),      //Optional
+        mondayFirst: true,          //Optional
+        //disableWeekdays: [0],       //Optional
+        closeOnSelect: true,       //Optional
+        templateType: 'popup'       //Optiona
       };
 
       ionicDatePicker.openDatePicker(ipObj1);
