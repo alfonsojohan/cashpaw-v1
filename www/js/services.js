@@ -57,7 +57,7 @@ angular.module('starter.services', [])
       chores.push(chore);
     };
 
-    console.log('Chores', chores);
+    // console.log('Chores', chores);
 
     return {
       all: function () {
