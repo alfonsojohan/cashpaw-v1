@@ -7,6 +7,9 @@
   },
   "dependencies": {
     "angular-elastic": "^2.5.1",
-    "ionic-datepicker": "^1.1.0"
+    "ionic-datepicker": "^1.1.0",
+    "ionic-numberpicker": "^1.1.4",
+    "ionic-timepicker": "^0.5.1",
+    "pouchdb-collate": "^1.2.0"
   }
 }

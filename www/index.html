@@ -6,6 +6,7 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
   <title></title>
 
+
   <link href="lib/ionic/css/ionic.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
 
@@ -16,12 +17,14 @@
   <!-- ionic/angularjs js -->
   <script src="lib/ionic/js/ionic.bundle.js"></script>
   <script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
-  
+
   <!-- My own added bower libs n plugins -->
+  <script src="lib/pouchdb/dist/pouchdb.min.js"></script>
+  <script src="lib/pouchdb-collate/dist/pouchdb-collate.js"></script>
   <script src="lib/angular-elastic/elastic.js"></script>
   <script src="lib/ionic-datepicker/dist/ionic-datepicker.bundle.min.js"></script>
-  <script src="lib/pouchdb/dist/pouchdb.min.js"></script>
-  
+  <script src="lib/ionic-timepicker/dist/ionic-timepicker.bundle.min.js"></script>
+
   <!-- cordova script (this will be a 404 during development) -->
   <!-- Cordova is bootstrapped by ionic-platform-web-client, uncomment this if you remove ionic-platform-web-client... -->
   <!-- <script src="cordova.js"></script> -->
@@ -31,6 +34,7 @@
   <script src="js/controllers.js"></script>
   <script src="js/services.js"></script>
   <script src="js/services-task.js"></script>
+  <script src="js/services-user.js"></script>
 </head>
 
 <body ng-app="starter">

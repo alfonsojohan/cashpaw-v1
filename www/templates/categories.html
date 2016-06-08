@@ -1,0 +1,16 @@
+<ion-view view-title="Categories" hide-back-button="false">
+ <ion-nav-buttons side="right">
+    <button class="button button-clear button-icon ion-close button-assertive" ng-click="categoryCtrl.goBack()"></button>
+    <div style="width:10px;">&nbsp;</div>
+    <button class="button button-clear button-icon ion-plus"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="row-no-padding">
+    <div class="item item-header item-positive">What kind of task is it?</div>
+    <ion-list>
+      <ion-item class="item-avatar" ng-repeat="category in categoryCtrl.categories" ng-click="categoryCtrl.selectCategory(category)">
+        <img ng-src="{{category.img}}"> {{category.label}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,16 @@
+<ion-view view-title="Chore Circle" hide-back-button="false">
+ <ion-nav-buttons side="right">
+    <button class="button button-clear button-icon ion-close button-assertive" ng-click="userCtrl.goBack()"></button>
+    <!--<div style="width:10px;">&nbsp;</div>-->
+    <!--<button class="button button-clear button-icon ion-plus"></button>-->
+  </ion-nav-buttons>
+
+  <ion-content class="row-no-padding">
+    <div class="item item-header item-positive">Say Hi to your chore circle!</div>
+    <ion-list>
+      <ion-item class="item-avatar" ng-repeat="user in userCtrl.users" ng-click="userCtrl.select(user)">
+        <img ng-src="{{user.img}}"> {{user.name}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,5 +1,5 @@
 angular.module('starter.services')
-  .factory('TaskService', TaskService)
+  .service('TaskService', TaskService)
   ;
 
 /**
@@ -11,6 +11,9 @@ function TaskService($q) {
   var _tasks;
   var _that = this;
 
+  _that.currentTask = null;
+  _that.category = null;
+
   console.log('in TaskService');
 
   return {
@@ -20,7 +23,8 @@ function TaskService($q) {
     add: addTask,
     update: updateTask,
     remove: deleteTask,
-    get: getTask
+    get: getTask,
+    categories: getCategories,
   };
 
   /**
@@ -37,9 +41,31 @@ function TaskService($q) {
     _db.info().then(console.log.bind(console));
   };
 
+  /**
+   * Generates a _id for each task with the prefix of task_ 
+   */
+  function generateTaskId(task) {
+
+    var now = new Date().getTime();
+    var prefix = "task_";
+
+    var id = prefix +
+      pouchCollate.toIndexableString([
+        encodeURI(task.name), 
+        encodeURI(task.owner.name), 
+        now
+    ]);
+
+    id.replace(/\u0000/g, '\u0001');  // This part is to handle bug in chrome if syncing with remote db. see https://github.com/pouchdb/collate
+
+    console.log('in TaskService.generateTaskId. _id: ', id);
+    return id; 
+  };
+
   function addTask(task) {
+    task._id = generateTaskId(task);
     console.log('in TaskService.addTask. Task: ', task);
-    return $q.when(_db.post(task));
+    return $q.when(_db.put(task));
   };
 
   function updateTask(task) {
@@ -114,6 +140,49 @@ function TaskService($q) {
       array[mid]._id < id ? low = mid + 1 : high = mid
     }
     return low;
+  };
+
+  /**
+   * Generates a _id for each category with the prefix of cat_ 
+   */
+  function generateCategoryId(category) {
+
+    var now = new Date().getTime();
+    var prefix = "cat_";
+
+    var id = prefix +
+      pouchCollate.toIndexableString([
+        encodeURI(category.name), 
+        encodeURI(category.creator.name), 
+        now
+    ]);
+
+    id.replace(/\u0000/g, '\u0001');  // This part is to handle bug in chrome if syncing with remote db. see https://github.com/pouchdb/collate
+
+    console.log('in TaskService.generateCategoryId. _id: ', id);
+    return id; 
+  };
+
+  /**
+   * Dummy function to return a fixed list of categories
+   */
+  function getCategories() {
+
+    console.log('in TaskService.getCategories()');
+    
+    return [{
+      label: 'Cleaning',
+      img: 'img/categories/broom.png',
+      creator: {
+        name: 'system'
+      },
+    }, {
+      label: 'Stuff',
+      img: 'img/categories/price-tag.png',
+      creator: {
+        name: 'system'
+      },
+    }];
   };
 
 };

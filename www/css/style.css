@@ -13,3 +13,8 @@
 .task-complete {
   text-decoration: line-through;
 }
+.aj-empty-list {
+  font-size: 130%;
+  font-weight: lighter;
+  font-style: italic;
+}
