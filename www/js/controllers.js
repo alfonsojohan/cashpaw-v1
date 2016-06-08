@@ -4,10 +4,20 @@ angular.module('starter.controllers', [])
     console.log('in AuthCtrl');
   })
 
-  .controller('DashCtrl', function ($scope, $state) {
+  .controller('DashCtrl', function (
+    $scope,
+    $state,
+    $ionicPlatform,
+    UserService,
+    TaskService) {
+
+    var _that = this;
 
     this.uid = null;
     this.pwd = null;
+
+    this.currentUser = UserService.currentUser();
+    this.family = UserService.all();
 
     /**
      * Facebook Login test

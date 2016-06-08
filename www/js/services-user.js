@@ -15,22 +15,26 @@ function UserService($q) {
     _id: 'user_dad',
     name: 'Dad',
     uid: 'dad',
-    img: 'img/family/tomh.jpg'
+    img: 'img/family/tomh.jpg',
+    role: 'parent'
   }, {
     _id: 'user_mom',
     name: 'Mummy',
     uid: 'mummy',
-    img: 'img/family/rosamundpike.jpg'
+    img: 'img/family/rosamundpike.jpg',
+    role: 'parent'
   }, {
     _id: 'user_harry',
     name: 'Harry',
     uid: 'harry',
-    img: 'img/family/potter.jpg'
+    img: 'img/family/potter.jpg',
+    role: 'child'
   }, {
     _id: 'user_hermione',
     name: 'Hermione',
     uid: 'hermione',
-    img: 'img/family/hermione.jpg'
+    img: 'img/family/hermione.jpg',
+    role: 'child'
   }];
 
   console.log('in UserService');

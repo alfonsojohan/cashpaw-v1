@@ -1,7 +1,23 @@
 <ion-view hide-nav-bar="true">
   <ion-content class="row-no-padding">
 
-    TODO
+    <div class="item row padding">
+      <div class="col col-50">
+        <img class="aj-avatar-large" ng-src="{{dashCtrl.currentUser.img}}">
+      </div>
+      <div class="col col-50 col-center">
+        <span class="aj-user-name">{{dashCtrl.currentUser.name}}</span>
+      </div>
+    </div>
 
+  <div class="item item-header item-positive">Your Circle Members</div>
+    <ion-scroll>
+      <div class="item item-borderless padding" ng-repeat="x in dashCtrl.family">
+        <ion-item ng-if="x._id != dashCtrl.currentUser._id" class="item row item-avatar-right">
+        <img ng-src="{{x.img}}">
+          {{x.name}}
+        </ion-item>
+      </div>
+    </ion-scroll>
   </ion-content>
 </ion-view>

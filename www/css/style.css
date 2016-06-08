@@ -18,3 +18,13 @@
   font-weight: lighter;
   font-style: italic;
 }
+.aj-avatar-large {
+  max-width: 150px !important;  
+  max-height: 150px !important;  
+  -webkit-border-radius: 75px; /* Saf3+, Chrome */
+	border-radius: 75px; /* Opera 10.5, IE 9 */
+	/*-moz-border-radius: 30px;  Disabled for FF1+ */  
+}
+.aj-user-name {
+  font-size: 200%;
+}
