@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.cashpawv1494917" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>cashpaw-v1</name>
+  <name>Cashpaw</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Chores made fun and easy.
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+  <author email="hello@cashpaw.com" href="http://example.com.com/">
+      Cashpaw
     </author>
   <content src="index.html"/>
   <access origin="*"/>

@@ -10,14 +10,24 @@
       </div>
     </div>
 
-  <div class="item item-header item-positive">Your Circle Members</div>
+    <div class="item item-header item-positive">Your Circle Members</div>
     <ion-scroll>
       <div class="item item-borderless padding" ng-repeat="x in dashCtrl.family">
         <ion-item ng-if="x._id != dashCtrl.currentUser._id" class="item row item-avatar-right">
-        <img ng-src="{{x.img}}">
-          {{x.name}}
+          <img ng-src="{{x.img}}"> {{x.name}}
         </ion-item>
       </div>
     </ion-scroll>
+
+    <div class="row">
+      <div class="col padding">
+        <button class="button button-primary button-block button-calm" ng-click="dashCtrl.checkForUpdates()">
+          {{dashCtrl.updateText}}
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      {{dashCtrl.updateProgress}}
+    </div>
   </ion-content>
 </ion-view>

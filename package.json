@@ -23,7 +23,8 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser",
     "cordova-sqlite-storage",
-    "cordova-plugin-datepicker"
+    "cordova-plugin-datepicker",
+    "ionic-plugin-deploy"
   ],
   "cordovaPlatforms": [
     "android"
