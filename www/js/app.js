@@ -9,6 +9,7 @@ angular.module('starter', [
   'starter.services',
   'ionic-datepicker',
   'ionic-timepicker',
+  'toastr'
 ])
 
   /**
@@ -52,10 +53,23 @@ angular.module('starter', [
     $urlRouterProvider,
     $ionicConfigProvider,
     ionicDatePickerProvider,
-    ionicTimePickerProvider) {
+    ionicTimePickerProvider,
+    toastrConfig) {
 
     // Set the tabs to be at the bottom for all including android and ios
     $ionicConfigProvider.tabs.position('bottom');
+
+    /**
+     * Configure toastr
+     */
+    angular.extend(toastrConfig, {
+      allowHtml: true,
+      maxOpened: 2,
+      closeButton: false,
+      tapToDismiss: true,
+      timeOut: 2000,
+      positionClass: "toast-bottom-center",
+    });
 
     // Configure date picker object
     var datePickerObj = {
@@ -97,6 +111,16 @@ angular.module('starter', [
         templateUrl: 'templates/tabs.html'
       })
 
+      //TODO remove the below state for production
+      .state('tab.test', {
+        url: '/test',
+        views: {
+          'tab-test': {
+            templateUrl: 'templates/test.html',
+            // controller: 'TestCtrl '
+          }
+        }
+      })
       // Each tab has its own nav history stack:
       .state('tab.tasks', {
         url: '/tasks',
@@ -138,6 +162,16 @@ angular.module('starter', [
         }
       })
 
+      .state('tab.rewards', {
+        url: '/rewards',
+        views: {
+          'tab-rewards': {
+            templateUrl: 'templates/tab-rewards.html',
+            controller: 'RewardsCtrl as rewardsCtrl',
+          },
+        },
+      })
+
       .state('register', {
         url: '/register',
         templateUrl: 'templates/register.html',
@@ -148,12 +182,13 @@ angular.module('starter', [
         templateUrl: 'templates/categories.html',
         controller: 'CategoryCtrl as categoryCtrl'
       })
-      
+
       .state('family', {
         url: '/family',
         templateUrl: 'templates/family.html',
         controller: 'UserCtrl as userCtrl'
       })
+
       ;
 
     // if none of the above states are matched, use this as the fallback

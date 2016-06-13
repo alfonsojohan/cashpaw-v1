@@ -28,3 +28,7 @@
 .aj-user-name {
   font-size: 200%;
 }
+/* override of toast position bottom center to offset by 70px from bottom */
+.toast-bottom-center {
+  bottom: 70px !important;
+}

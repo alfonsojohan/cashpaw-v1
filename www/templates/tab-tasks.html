@@ -13,7 +13,7 @@
         <!-- Check box 20% on left -->
         <div class="col col-20 item-borderless">
           <ion-item class="item-borderless">
-            <ion-checkbox class="item-borderless" ng-model="task.completed"></ion-checkbox>
+            <ion-checkbox class="item-borderless" ng-model="task.completed" ng-change="taskCtrl.onCheckChange(task)"></ion-checkbox>
             <p class="task-points-small">{{task.points}} pts</p>
           </ion-item>
         </div>
@@ -24,8 +24,6 @@
             <img ng-src="{{task.assignee.img || 'img/smiley-flat.png'}}">
             <h2 ng-class="{'task-complete': task.completed}">{{task.name}}</h2>
             <p>{{task.note}}</p>
-            <!--<i class="icon ion-chevron-right icon-accessory"></i>-->
-
             <ion-option-button class="button-assertive" ng-click="taskCtrl.remove(task)">
               Delete
             </ion-option-button>

@@ -10,6 +10,7 @@
     "ionic-datepicker": "^1.1.0",
     "ionic-numberpicker": "^1.1.4",
     "ionic-timepicker": "^0.5.1",
-    "pouchdb-collate": "^1.2.0"
+    "pouchdb-collate": "^1.2.0",
+    "angular-toastr": "^1.7.0"
   }
 }

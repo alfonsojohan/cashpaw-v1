@@ -7,14 +7,21 @@
       </div>
       <div class="col col-50 col-center">
         <span class="aj-user-name">{{dashCtrl.currentUser.name}}</span>
+        <br /> 
+        {{dashCtrl.currentUser.email}}
+        <br />
+        <span class="task-points-small">Points: {{dashCtrl.currentUser.points | number:0}}</span>
       </div>
     </div>
 
     <div class="item item-header item-positive">Your Circle Members</div>
     <ion-scroll>
-      <div class="item item-borderless padding" ng-repeat="x in dashCtrl.family">
-        <ion-item ng-if="x._id != dashCtrl.currentUser._id" class="item row item-avatar-right">
-          <img ng-src="{{x.img}}"> {{x.name}}
+      <div class="item item-borderless row-no-padding" ng-repeat="x in dashCtrl.family">
+        <ion-item ng-if="x._id != dashCtrl.currentUser._id" class="item item-thumbnail-left">
+          <img ng-src="{{x.img}}">
+          <h2>{{x.name}}</h2>   
+          <p>{{x.email}}</p> 
+          <p>Points: {{x.points | number:0}}</p>      
         </ion-item>
       </div>
     </ion-scroll>
