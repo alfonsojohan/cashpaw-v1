@@ -1,167 +1,180 @@
 angular.module('starter.services', [])
 
-  .factory('Chores', function () {
-    // Might use a resource here that returns a JSON array
+/**
+ * Define db related constants for use and to minimize typo errors
+ */
+.constant('POUCH_CONSTANTS', {
+  'DB_NAME': 'cashpaw',
+  'DB_ADAPTER': 'websql',
+  'DB_LOCATION': 'default',
+  'WILDCARD': '\uffff',
+  'DOC_TYPES': {
+    'TASK': 'task_',
+    'REWARD': 'reward_',
+    'CATEGORY': 'cat_',
+    'USER': 'user_',
+  },
+  'REPLICATION': {
+    'URL': 'http://localhost',
+    'PORT': 5984
+  }
+})
 
-    var choreList = ['Do homework', 'Clean room', 'Throw garbage', 'Vacuum room', 'Laundry'];
-    var categoryList = ['House', 'Outdoors', 'Meals', 'Learning', 'General', 'Cleaning'];
-    var descList = [
-      'You need to do this!',
-      'Eat something',
-      'Please get it done',
-      'No pain no gain',
-      'Disneyworld is not a dream',
-      'Its pasta night tonight'
-    ];
-
-    var imgList = [
-      'adam.jpg',
-      'ben.png',
-      'max.png',
-      'mike.png',
-      'perry.png',
-    ];
-
-    var chores = [];
-    var choreCount = 10;
+/**
+ * Service with functions that can be reused in various places
+ */
+.service('UtilityService', function (
+  $ionicPopup,
+  $ionicHistory) {
+    
+    console.log('in UtilityService');
 
     /**
-     * Generate random data
+     * Show a TODO alert
      */
-    for (var i = 0, r = 0; i < choreCount; i++) {
+    this.todo = function () {
+      $ionicPopup.alert({
+        template: "Oops. This is not ready yet",
+        title: 'Hang in there!'
+      });
+    };  
 
-      chore = { id: i };
+    /**
+     * Go back in history and reset the history root 
+     * Can override by passing in custom args
+     */
+    this.goBack = function (count, args) {
+      count = count || -1;
+      args = args || {
+        disableBack: true,
+        historyRoot: true
+      };
 
-      r = Math.floor((Math.random() * choreList.length));
-      chore.name = choreList[r];
+      $ionicHistory.nextViewOptions(args);
+      $ionicHistory.goBack(count);
+    };    
+})
 
-      r = Math.floor((Math.random() * categoryList.length));
-      chore.category = categoryList[r];
-      chore.categoryImg = 'img/categories/price-tag.png';
-      
-      r = Math.floor((Math.random() * categoryList.length));
-      chore.note = descList[r];
+/**
+ * Define a singleton for PouchDb so that we can inject it into our
+ * controllers and services
+ */
+.service('PouchDbService', PouchDbService)
+;
 
-      r = Math.floor((Math.random() * imgList.length));
-      chore.img = 'img/' + imgList[r];
+/**
+ * Implementation of the PouchDbService
+ */
+function PouchDbService(
+  POUCH_CONSTANTS) {
 
-      r = Math.round(Math.random() * (200 - 10) + 10);
-      chore.points = Math.round(r / 10) * 10;
+  console.log('>>> In PouchDbService');
 
-      r = Math.round(Math.random() * (120 - 15) + 15);
-      r = Math.ceil(r/5) * 5;
-      chore.duration = r;
-      
-      chore.completed = false;
+  var _db = null;
+  var _that = this;
 
-      chores.push(chore);
+  return {
+    init: initDb,
+    db: getDb,
+    newId: newId,
+    findIndex: findIndex,
+    replicate: replicate
+  }; 
+
+  /**
+   * Function to create if new, else will open existing db
+   */
+  function initDb() {
+    _db = new PouchDB(POUCH_CONSTANTS.DB_NAME, {
+      adapter: POUCH_CONSTANTS.DB_ADAPTER,
+      iosDatabaseLocation: POUCH_CONSTANTS.DB_LOCATION    // This is now mandatory 
+    });
+
+    // Next 2 lines is to debug we are using the right adapter sqlite: true /false
+    console.log('>>> PouchDbService.initDb');
+    _db.info().then('>>> PouchDbService.info()', console.log.bind(console));
+  };  
+
+  /**
+   * Start replication to couchdb / pouchdb server
+   */
+  function replicate() {
+
+    var uri = POUCH_CONSTANTS.REPLICATION.URL + ':' 
+      + POUCH_CONSTANTS.REPLICATION.PORT 
+      + '/' + POUCH_CONSTANTS.DB_NAME;
+
+    console.log('>>> PouchDbService.replicate. URL: ', uri);
+
+    PouchDB.replicate(
+      POUCH_CONSTANTS.DB_NAME, 
+      uri, 
+      {
+        live: true
+      });
+  };
+
+  /**
+   * Get the db instance
+   */
+  function getDb() {
+    console.log('>>> PouchDbService.getDb');
+    return _db;
+  };
+
+  /**
+   * Generate a new _id for different document types
+   */
+  function newId(docType, obj) {
+    console.log('>>> PouchDbService.newId Type: ', docType, ' Obj: ', obj);
+
+    var now = new Date().getTime();
+    var prefix = docType || 'unknown_type_' ;
+    var id = null;
+    var args = [];
+
+    switch (docType) {
+      case POUCH_CONSTANTS.DOC_TYPES.TASK:
+      case POUCH_CONSTANTS.DOC_TYPES.REWARD:
+        args.push(
+          encodeURI(obj.name),
+          encodeURI(obj.owner.name),
+          now
+        ); 
+        break;
+
+      case POUCH_CONSTANTS.DOC_TYPES.CATEGORY:
+        args.push(
+          encodeURI(obj.name),
+          encodeURI(obj.creator.name),
+          now
+        ); 
+        break;
+    
+      default:
+        throw new Error('PouchDbService: Unknown doc type: ', docType);
     };
 
-    // console.log('Chores', chores);
+    id = prefix + pouchCollate.toIndexableString(args);
+    // This part is to handle bug in chrome if syncing with remote db. 
+    // See https://github.com/pouchdb/collate
+    id.replace(/\u0000/g, '\u0001'); 
+    
+    return id;
 
-    return {
-      all: function () {
-        return chores;
-      },
-      remove: function (chore) {
-        chores.splice(chores.indexOf(chore), 1);
-      },
-      get: function (choreId) {
-        for (var i = 0; i < chores.length; i++) {
-          if (chores[i].id === parseInt(choreId)) {
-            return chores[i];
-          }
-        }
-        return null;
-      }
-    };
-  })
+  };  // eo newId
 
-  .factory('Chats', function () {
-    // Might use a resource here that returns a JSON array
+  /**
+   * Get the specified element index based on id
+   */
+  function findIndex(array, id) {
+    console.log('>>> PouchDbService.findIndex ', array, id)
+    var low = 0, high = array.length, mid;
+    while (low < high) {
+      mid = (low + high) >>> 1;
+      array[mid]._id < id ? low = mid + 1 : high = mid
+    }
+    return low;
+  };  
 
-    // Some fake testing data
-    var chats = [{
-      id: 0,
-      name: 'Ben Sparrow',
-      lastText: 'You on your way?',
-      face: 'img/ben.png'
-    }, {
-        id: 1,
-        name: 'Max Lynx',
-        lastText: 'Hey, it\'s me',
-        face: 'img/max.png'
-      }, {
-        id: 2,
-        name: 'Adam Bradleyson',
-        lastText: 'I should buy a boat',
-        face: 'img/adam.jpg'
-      }, {
-        id: 3,
-        name: 'Perry Governor',
-        lastText: 'Look at my mukluks!',
-        face: 'img/perry.png'
-      }, {
-        id: 4,
-        name: 'Mike Harrington',
-        lastText: 'This is wicked good ice cream.',
-        face: 'img/mike.png'
-      }, {
-        id: 5,
-        name: 'Perry Governor',
-        lastText: 'Look at my mukluks!',
-        face: 'img/perry.png'
-      }, {
-        id: 6,
-        name: 'Mike Harrington',
-        lastText: 'This is wicked good ice cream.',
-        face: 'img/mike.png'
-      }, {
-        id: 7,
-        name: 'Perry Governor',
-        lastText: 'Look at my mukluks!',
-        face: 'img/perry.png'
-      }, {
-        id: 8,
-        name: 'Mike Harrington',
-        lastText: 'This is wicked good ice cream.',
-        face: 'img/mike.png'
-      }, {
-        id: 9,
-        name: 'Perry Governor',
-        lastText: 'Look at my mukluks!',
-        face: 'img/perry.png'
-      }, {
-        id: 10,
-        name: 'Mike Harrington',
-        lastText: 'This is wicked good ice cream.',
-        face: 'img/mike.png'
-      }, {
-        id: 11,
-        name: 'Perry Governor',
-        lastText: 'Look at my mukluks!',
-        face: 'img/perry.png'
-      }, {
-        id: 12,
-        name: 'Mike Harrington',
-        lastText: 'This is wicked good ice cream.',
-        face: 'img/mike.png'
-      }];
-
-    return {
-      all: function () {
-        return chats;
-      },
-      remove: function (chat) {
-        chats.splice(chats.indexOf(chat), 1);
-      },
-      get: function (chatId) {
-        for (var i = 0; i < chats.length; i++) {
-          if (chats[i].id === parseInt(chatId)) {
-            return chats[i];
-          }
-        }
-        return null;
-      }
-    };
-  });
+};  // eo PouchDbService

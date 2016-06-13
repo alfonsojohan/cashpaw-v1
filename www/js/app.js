@@ -27,11 +27,15 @@ angular.module('starter', [
     };
   })
 
-  .run(function ($ionicPlatform, $ionicAnalytics) {
+  .run(function ($ionicPlatform, $ionicAnalytics, PouchDbService) {
     $ionicPlatform.ready(function () {
 
       // Register analytics
       $ionicAnalytics.register();
+
+      // Init Db and start the replication 
+      PouchDbService.init();
+      PouchDbService.replicate();
 
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)

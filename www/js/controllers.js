@@ -9,7 +9,8 @@ angular.module('starter.controllers', [])
     $state,
     $ionicPlatform,
     UserService,
-    TaskService) {
+    TaskService,
+    PouchDbService) {
 
     var _that = this;
     var deploy = new Ionic.Deploy();

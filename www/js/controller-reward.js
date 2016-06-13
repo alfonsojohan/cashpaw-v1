@@ -1,28 +1,35 @@
 angular.module('starter.controllers')
 
-  .controller('TasksCtrl', function (
+  .controller('RewardsCtrl', function (
     $scope,
     $rootScope,
     $state,
     $ionicPlatform,
     $ionicPopup,
     $stateParams,
+    $ionicHistory,
+    RewardService,
     ionicDatePicker,
     ionicTimePicker,
     TaskService,
     UserService,
     toastr,
-    numberFilter,
-    UtilityService) {
+    numberFilter) {
 
     // Keep a reference to this
     var _that = this;
 
+    $ionicPlatform.ready(function () {
+      
+    });
+
+    this.penaltyLabel = null; // Used to display the penalty pts
     this.initDone = false;
     this.headerTitle = 'New Task';
     this.task = {};
     this.originalTask = null;
     this.edit = false;
+    this.chores = null;
     this.categories = [];
 
     /**
@@ -47,8 +54,16 @@ angular.module('starter.controllers')
     this.resetTask();
 
     this.todoStub = function () {
-      UtilityService.todo();
+      $ionicPopup.alert({
+        template: "Oops. This is not ready yet",
+        title: 'Hang in there!'
+      });
+      // window.alert('Oops. This is not ready yet.');
     };
+
+    this.new = function () {
+      _that.todoStub();
+    }
 
     /**
      * Set the initial processing of the controller based on the ui state
@@ -60,6 +75,7 @@ angular.module('starter.controllers')
           console.log('in TaskService.$ionicPlatform.ready');
 
           try {
+            TaskService.initDb();
             TaskService.all().then(function (result) {
               _that.chores = result;
             });
@@ -350,7 +366,11 @@ angular.module('starter.controllers')
     };
 
     this.goBack = function () {
-      UtilityService.goBack();
+      $ionicHistory.nextViewOptions({
+        disableBack: true,
+        historyRoot: true
+      });
+      $ionicHistory.goBack();
     };
 
     this.selectCategory = function () {

@@ -19,3 +19,10 @@ jsconfig.json
 platforms
 resources/android
 resources/ios
+
+#pouchdb files
+_replicator
+_users
+cashpaw
+pouch__all_dbs__
+log.txt
