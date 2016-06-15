@@ -7,8 +7,6 @@
 
   <ion-content class="padding">
 
-    <form name="newTask" novalidate>
-      
     <!-- Task name -->
     <label class="item item-input">
       <input type="text" placeholder="Task Name" ng-model="taskCtrl.task.name" required>
@@ -141,8 +139,6 @@
         <button class="button button-block ion-ios-trash" ng-click="taskCtrl.removeFromDetailView(taskCtrl.task)">&nbsp;Delete</button>
       </div>
     </div>
-    
-    </form>
     
   </ion-content>
 </ion-view>

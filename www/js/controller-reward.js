@@ -182,13 +182,14 @@ angular.module('starter.controllers')
     }
 
     // TODO add points
-    if (reward.completed && reward.assignee) {
-      u = UserService.addPoints(reward.assignee._id, reward.points);
-    } else {
-      u = UserService.deletePoints(reward.assignee._id, reward.points);
-    }
+    toastr.info('TODO: Rewards redemption');
+    // if (reward.completed && reward.assignee) {
+    //   u = UserService.addPoints(reward.assignee._id, reward.points);
+    // } else {
+    //   u = UserService.deletePoints(reward.assignee._id, reward.points);
+    // }
 
-    toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
+    // toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
   };
 
   /**

@@ -100,10 +100,14 @@ function TaskService(
 
   function onDatabaseChange(change) {
 
-    var index = PouchDbService.findIndex(_tasks, change.id);
+    console.log('in TaskService.onDatabaseChange. Change: ', change);
+
+    if (-1 == change.id.indexOf(POUCH_CONSTANTS.DOC_TYPES.TASK)) {
+      return;
+    };
+   var index = PouchDbService.findIndex(_tasks, change.id);
     var task = _tasks[index];
 
-    console.log('in TaskService.onDatabaseChange. Change: ', change, index);
 
     if (change.deleted) {
       if (task) {

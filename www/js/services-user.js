@@ -107,21 +107,21 @@ function UserService(
     _deferred.resolve([user]);
   }
 
-  function get(id) {
-    for (var i = 0; i < _that._users.length; i++) {
-      if (id == _that._users[i]._id) {
-        return _that._users[i];
+  this.get = function (id) {
+    for (var i = 0; i < _that.users.length; i++) {
+      if (id == _that.users[i]._id) {
+        return _that.users[i];
       }
     }
   };
 
-  function addPoints(id, points) {
+  this.addPoints = function (id, points) {
     var u = this.get(id);
     u.points = u.points + points;
     return u;
   };
 
-  function deletePoints(id, points) {
+  this.deletePoints = function (id, points) {
     var u = this.get(id);
     u.points = u.points - points;
     return u;

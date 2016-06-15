@@ -1,14 +1,14 @@
 <ion-view view-title="Tasks">
 
   <ion-nav-buttons side="right">
-    <button class="button button-clear button-icon ion-plus" ng-click="taskCtrl.newTask()"></button>
+    <button class="button button-clear button-icon ion-plus" ui-sref="tab.new-task"></button>
   </ion-nav-buttons>
 
   <ion-content>
-    <p ng-hide="taskCtrl.chores.length" class="aj-empty-list padding">Hooray! No chores here. Click on + to add a chore.</p>
+    <p ng-if="!taskCtrl.tasks.length" class="aj-empty-list padding">Hooray! No chores here. Click on + to add a chore.</p>
     
     <ion-list>
-      <div class="row row-no-padding item" ng-repeat="task in taskCtrl.chores">
+      <div class="row row-no-padding item" ng-repeat="task in taskCtrl.tasks">
         
         <!-- Check box 20% on left -->
         <div class="col col-20 item-borderless">
@@ -20,13 +20,13 @@
 
         <!-- List item 80% with task data, slide to delete and click to view -->
         <div class="col col-80 item-borderless">
-          <ion-item class="item-remove-animate item-borderless item-avatar-right item-icon-right" type="item-text-wrap" ng-click="taskCtrl.viewTask(task)">
+          <ion-item class="item-remove-animate item-borderless item-avatar-right item-icon-right" type="item-text-wrap"  ng-click="taskCtrl.viewTask(task)">
             <img ng-src="{{task.assignee.img || 'img/smiley-flat.png'}}">
             <h2 ng-class="{'task-complete': task.completed}">{{task.name}}</h2>
             <p>{{task.note}}</p>
-            <ion-option-button class="button-assertive" ng-click="taskCtrl.remove(task)">
-              Delete
-            </ion-option-button>
+
+            <!-- Slide options button -->
+            <ion-option-button class="button-assertive" ng-click="taskCtrl.remove(task)">Delete</ion-option-button>
           </ion-item>
         </div>
       </div>
