@@ -137,7 +137,8 @@ angular.module('starter.controllers')
       RewardService.add(_that.reward);
     };
 
-    UtilityService.goBack();
+    $state.go('tab.rewards');
+    // UtilityService.goBack();
   };
   
   /**
