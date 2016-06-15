@@ -1,0 +1,14 @@
+<ion-modal-view ng-controller="UserCtrl as userCtrl">
+  <ion-header-bar>
+    <h1 class="title">Chore Circle</h1>
+    <button class="button button-clear button-icon ion-close button-assertive" ng-click="userCtrl.cancel()"></button>
+  </ion-header-bar>
+  <ion-content class="row-no-padding">
+    <div class="item item-header item-positive">Say Hi to your chore circle!</div>
+    <ion-list>
+      <ion-item class="item-avatar" ng-repeat="user in userCtrl.users" ng-click="userCtrl.select(user)">
+        <img ng-src="{{user.img}}"> {{user.name}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

@@ -1,82 +1,111 @@
 angular.module('starter.services')
-  .factory('UserService', UserService)
-  ;
+.service('UserService', UserService)
+;
 
 /**
  * Implementation of UserService
  */
-function UserService($q) {
+function UserService(
+  $q, 
+  $ionicModal,
+  $state,
+  PouchDbService) {
 
-  var _db;
   var _that = this;
-  var _currentUser = null;
+  var _deferred = null; 
+  var _db = PouchDbService.db();
 
-  this.randomPoints = function () {
+  console.log('>>> in UserService. db: ', _db);
+
+  /**
+   * Function to generate random number of points for each dummy user
+   */
+  var randomPoints = function () {
     var min = 0;
     var max = 5000;
-
     return Math.floor(Math.random() * (max - min) + min);
   };
 
-  var _users = [{
+  /**
+   * Static array of dummy users
+   */
+  this.users = [{
     _id: 'user_dad',
     name: 'Dad',
-    // uid: 'dad',
     img: 'img/family/tomh.jpg',
     role: 'parent',
-    points: this.randomPoints(),
+    points: randomPoints(),
     email: 'bond007@mi6.gov.uk',
   }, {
-      _id: 'user_mom',
-      name: 'Mummy',
-      // uid: 'mummy',
-      img: 'img/family/rosamundpike.jpg',
-      role: 'parent',
-      points: this.randomPoints(),
-      email: 'mummy@gonegirl.co.uk',
-    }, {
-      _id: 'user_harry',
-      name: 'Harry Potter',
-      // uid: 'harry',
-      img: 'img/family/potter.jpg',
-      role: 'child',
-      points: this.randomPoints(),
-      email: 'harry123@hogwarts.ac.uk',
-    }, {
-      _id: 'user_hermione',
-      name: 'Hermione Granger',
-      // uid: 'hermione',
-      img: 'img/family/hermione.jpg',
-      role: 'child',
-      points: this.randomPoints(),
-      email: 'hermione@hogwarts.ac.uk',
-    }];
+    _id: 'user_mom',
+    name: 'Mummy',
+    img: 'img/family/rosamundpike.jpg',
+    role: 'parent',
+    points: randomPoints(),
+    email: 'mummy@gonegirl.co.uk',
+  }, {
+    _id: 'user_harry',
+    name: 'Harry Potter',
+    img: 'img/family/potter.jpg',
+    role: 'child',
+    points: randomPoints(),
+    email: 'harry123@hogwarts.ac.uk',
+  }, {
+    _id: 'user_hermione',
+    name: 'Hermione Granger',
+    img: 'img/family/hermione.jpg',
+    role: 'child',
+    points: randomPoints(),
+    email: 'hermione@hogwarts.ac.uk',
+  }];
 
-  console.log('in UserService');
+/**
+ * Setup the ionicModal element for choosing a user
+ */
+  function setupChooser() {
+    console.log('>>> UserService setupChooser');
+
+    $ionicModal.fromTemplateUrl('templates/family-list.html', {
+      scope: null,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      _that.modal = modal;
+    });    
+  };
+
+  if (!_that.modal) {
+    setupChooser();
+  }
+
+  // this.$on('destroy', function () {
+  //   _that.modal.remove();
+  // });
 
   /**
    * Set the currentUser for test purposes
    */
-  _that._currentUser = _users[0];
-  _that._users = _users;
+  this.user = this.users[0];
 
-  return {
-    all: all,
-    currentUser: currentUser,
-    get: get,
-    addPoints: addPoints,
-    deletePoints: deletePoints
+  this.all = function() {
+    console.log('in UserService.all', _that.users);
+    return _that.users;
   };
 
-  function all() {
-    console.log('in UserService.all', _that._users);
-    return _that._users;
+  this.currentUser = function() {
+    console.log('in UserService.currentUser: ', _that.user);
+    return _that.user;
   };
 
-  function currentUser() {
-    console.log('in UserService.currentUser: ', _that._currentUser);
-    return _that._currentUser;
-  };
+  this.choose = function () {
+    _deferred = $q.defer();
+    _that.modal.show();
+    return _deferred.promise;
+  }
+
+  this.endChoose = function (user) {
+    _that.modal.hide();
+    _deferred.resolve([user]);
+  }
 
   function get(id) {
     for (var i = 0; i < _that._users.length; i++) {

@@ -1,0 +1,57 @@
+<ion-view view-title="{{rewardsCtrl.headerTitle}}" hide-back-button="true">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-icon ion-close button-assertive" ng-click="rewardsCtrl.cancel()"></button>
+    <div style="width:10px;">&nbsp;</div>
+    <button class="button button-clear button-icon ion-checkmark" ng-click="rewardsCtrl.save()"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="padding">
+
+    <form name="frmNewReward" novalidate>
+
+      <!-- Reward name -->
+      <label class="item item-input">
+      <input type="text" placeholder="reward Name" ng-model="rewardsCtrl.reward.name" required>
+    </label>
+
+      <!-- Points button -->
+      <div class="row row-no-padding">
+        <div class="col">
+          <button class="button button-block ion-star" ng-click="rewardsCtrl.assignPoints()">&nbsp;{{rewardsCtrl.reward.points}} pts</button>
+        </div>
+      </div>
+
+      <!-- Assign to user section -->
+      <div class="text-center">Assign</div>
+      <a class="button button-icon item-avatar button-block button-large" ng-click="rewardsCtrl.selectUser()">
+        <img ng-src="{{rewardsCtrl.reward.assignee.img || 'img/smiley-flat.png'}}">&nbsp;
+        <span ng-show="rewardsCtrl.reward.assignee">{{rewardsCtrl.reward.assignee.name}}</span>
+        <span ng-show="!rewardsCtrl.reward.assignee">No one here...</span>
+      </a>
+
+      <!-- Notes section with auto-expanding textarea using angular-elastic -->
+      <div style="margin:10px 0 0 0;">
+        <div class="text-center">Notes</div>
+        <label class="item item-input">
+      <textarea ng-model="rewardsCtrl.reward.note" placeholder="Anything to add?" class="msd-elastic"></textarea>
+      </label>
+      </div>
+
+      <!-- extra line break to keep some spacing at bottom -->
+      <br>
+
+      <!-- Only visible for edit rewards, the history and delete button -->
+      <div class="row row-no-padding" ng-if="rewardsCtrl.edit">
+        <div class="col col-50">
+          <button class="button button-block ion-clock button-stable" ng-click="rewardsCtrl.todoStub()">&nbsp;History</button>
+        </div>
+        <div style="width:5px;">&nbsp;</div>
+        <div class="col col-50">
+          <button class="button button-block ion-ios-trash" ng-click="rewardsCtrl.removeFromDetailView(rewardsCtrl.reward)">&nbsp;Delete</button>
+        </div>
+      </div>
+
+    </form>
+
+  </ion-content>
+</ion-view>

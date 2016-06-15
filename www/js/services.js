@@ -20,6 +20,11 @@ angular.module('starter.services', [])
   }
 })
 
+.constant('AUTH_EVENTS', {
+  notAuthenticated: 'auth-not-authenticated',
+  notAuthorized: 'auth-not-authorized'
+})
+
 /**
  * Service with functions that can be reused in various places
  */
@@ -73,59 +78,59 @@ function PouchDbService(
   var _db = null;
   var _that = this;
 
-  return {
-    init: initDb,
-    db: getDb,
-    newId: newId,
-    findIndex: findIndex,
-    replicate: replicate
-  }; 
-
   /**
    * Function to create if new, else will open existing db
    */
-  function initDb() {
-    _db = new PouchDB(POUCH_CONSTANTS.DB_NAME, {
+  this.init = function () {
+    console.log('>>> PouchDbService.init');
+
+    _db = new PouchDB({
+      name: POUCH_CONSTANTS.DB_NAME,
       adapter: POUCH_CONSTANTS.DB_ADAPTER,
-      iosDatabaseLocation: POUCH_CONSTANTS.DB_LOCATION    // This is now mandatory 
+      iosDatabaseLocation: POUCH_CONSTANTS.DB_LOCATION,    // This is now mandatory
+      auto_compaction: true, 
     });
 
-    // Next 2 lines is to debug we are using the right adapter sqlite: true /false
-    console.log('>>> PouchDbService.initDb');
-    _db.info().then('>>> PouchDbService.info()', console.log.bind(console));
+    /**
+     * We now return a promise from the init function so that 
+     * the app will wait for the init to complete before proceeding
+     * Inspired from:
+     * https://www.raymondcamden.com/2014/08/16/Ionic-and-Cordovas-DeviceReady-My-Solution/
+     */
+    return _db.info();
   };  
 
   /**
    * Start replication to couchdb / pouchdb server
    */
-  function replicate() {
+  // function replicate() {
 
-    var uri = POUCH_CONSTANTS.REPLICATION.URL + ':' 
-      + POUCH_CONSTANTS.REPLICATION.PORT 
-      + '/' + POUCH_CONSTANTS.DB_NAME;
+  //   var uri = POUCH_CONSTANTS.REPLICATION.URL + ':' 
+  //     + POUCH_CONSTANTS.REPLICATION.PORT 
+  //     + '/' + POUCH_CONSTANTS.DB_NAME;
 
-    console.log('>>> PouchDbService.replicate. URL: ', uri);
+  //   console.log('>>> PouchDbService.replicate. URL: ', uri);
 
-    PouchDB.replicate(
-      POUCH_CONSTANTS.DB_NAME, 
-      uri, 
-      {
-        live: true
-      });
-  };
+  //   PouchDB.replicate(
+  //     _db, 
+  //     uri, 
+  //     {
+  //       live: true
+  //     });
+  // };
 
   /**
    * Get the db instance
    */
-  function getDb() {
-    console.log('>>> PouchDbService.getDb');
+  this.db = function () {
+    console.log('>>> PouchDbService.db');
     return _db;
   };
 
   /**
    * Generate a new _id for different document types
    */
-  function newId(docType, obj) {
+  this.newId = function (docType, obj) {
     console.log('>>> PouchDbService.newId Type: ', docType, ' Obj: ', obj);
 
     var now = new Date().getTime();
@@ -167,7 +172,7 @@ function PouchDbService(
   /**
    * Get the specified element index based on id
    */
-  function findIndex(array, id) {
+  this.findIndex = function (array, id) {
     console.log('>>> PouchDbService.findIndex ', array, id)
     var low = 0, high = array.length, mid;
     while (low < high) {

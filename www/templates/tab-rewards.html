@@ -1,35 +1,35 @@
 <ion-view view-title="Rewards">
 
-<ion-nav-buttons side="right">
-  <button class="button button-clear button-icon ion-plus" ng-click="rewardsCtrl.new()"></button>
-</ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear button-icon ion-plus" ui-sref="tab.new-reward"></button>
+  </ion-nav-buttons>
 
-<ion-content>
-  <p ng-hide="rewardsCtrl.chores.length" class="aj-empty-list padding">Start rewarding. Click on + to add something fun!.</p>
+  <ion-content>
+    <p ng-hide="rewardsCtrl.rewards.length" class="aj-empty-list padding">Start rewarding. Click on + to add something fun!.</p>
 
-  <ion-list>
-    <div class="row row-no-padding item" ng-repeat="task in rewardsCtrl.chores">
+    <ion-list>
+      <div class="row row-no-padding item" ng-repeat="reward in rewardsCtrl.rewards">
 
-      <!-- Check box 20% on left -->
-      <div class="col col-20 item-borderless">
-        <ion-item class="item-borderless">
-          <ion-checkbox class="item-borderless" ng-model="task.completed" ng-change="rewardsCtrl.onCheckChange(task)"></ion-checkbox>
-          <p class="task-points-small">{{task.points}} pts</p>
-        </ion-item>
+        <!-- Check box 20% on left -->
+        <div class="col col-20 item-borderless">
+          <ion-item class="item-borderless">
+            <ion-checkbox class="item-borderless" ng-model="reward.completed" ng-change="rewardsCtrl.onCheckChange(reward)"></ion-checkbox>
+            <p class="reward-points-small">{{reward.points}} pts</p>
+          </ion-item>
+        </div>
+
+        <!-- List item 80% with reward data, slide to delete and click to view -->
+        <div class="col col-80 item-borderless">
+          <ion-item class="item-remove-animate item-borderless item-avatar-right item-icon-right" type="item-text-wrap" ng-click="rewardsCtrl.view(reward)">
+            <img ng-src="{{reward.assignee.img || 'img/smiley-flat.png'}}">
+            <h2 ng-class="{'reward-complete': reward.completed}">{{reward.name}}</h2>
+            <p>{{reward.note}}</p>
+
+            <!-- Delete button on swipe -->
+            <ion-option-button class="button-assertive" ng-click="rewardsCtrl.remove(reward)">Delete</ion-option-button>
+          </ion-item>
+        </div>
       </div>
-
-      <!-- List item 80% with task data, slide to delete and click to view -->
-      <div class="col col-80 item-borderless">
-        <ion-item class="item-remove-animate item-borderless item-avatar-right item-icon-right" type="item-text-wrap" ng-click="rewardsCtrl.viewTask(task)">
-          <img ng-src="{{task.assignee.img || 'img/smiley-flat.png'}}">
-          <h2 ng-class="{'task-complete': task.completed}">{{task.name}}</h2>
-          <p>{{task.note}}</p>
-          <ion-option-button class="button-assertive" ng-click="rewardsCtrl.remove(task)">
-            Delete
-          </ion-option-button>
-        </ion-item>
-      </div>
-    </div>
-  </ion-list>
-</ion-content>
+    </ion-list>
+  </ion-content>
 </ion-view>

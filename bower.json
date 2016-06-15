@@ -11,6 +11,7 @@
     "ionic-numberpicker": "^1.1.4",
     "ionic-timepicker": "^0.5.1",
     "pouchdb-collate": "^1.2.0",
-    "angular-toastr": "^1.7.0"
+    "angular-toastr": "^1.7.0",
+    "pouchdb": "^5.4.3"
   }
 }

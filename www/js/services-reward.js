@@ -1,6 +1,6 @@
 angular.module('starter.services')
-  .service('RewardService', RewardService)
-  ;
+.service('RewardService', RewardService)
+;
 
 /**
  * Implementation of RewardService
@@ -8,54 +8,51 @@ angular.module('starter.services')
 function RewardService(
   $q,
   POUCH_CONSTANTS,
-  PouchDbService) {
+  PouchDbService,
+  UserService) {
 
   var _db = PouchDbService.db();
-  var _tasks;
+  var _rewards = null;
   var _that = this;
 
-  _that.currentTask = null;
-  _that.category = null;
+  _that.currentReward = null;
 
-  console.log('in RewardService');
+  console.log('in RewardService, db: ', _db);
 
-  return {
-    all: all,
-    add: add,
-    update: update,
-    remove: remove,
-    get: get,
-  };
-
-  function add(reward) {
-    task._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPE.REWARD, reward);
+  this.add = function (reward) {
+    reward.owner = UserService.currentUser();
+    reward._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPES.REWARD, reward);
     console.log('in RewardService.add. ', reward);
     return $q.when(_db.put(reward));
   };
 
-  function update(task) {
-    console.log('in RewardService.updateTask');
-    return $q.when(_db.put(task));
+  this.remove = function (reward) {
+    console.log('in RewardService.remove. reward:', reward);
+    return $q.when(_db.remove(reward._id, reward._rev));
   };
 
-  function remove(task) {
-    console.log('in RewardService.deleteTask. Task:', task);
-    return $q.when(_db.remove(task._id, task._rev));
+  this.update = function (reward) {
+    console.log('in RewardService.update', reward);
+    return $q.when(_db.put(reward));
   };
 
-  function get(taskId) {
-    console.log('in RewardService.getTask', taskId);
-    return $q.when(_db.get(taskId));
+  this.get = function (rewardId) {
+    console.log('in RewardService.getreward', rewardId);
+    return $q.when(_db.get(rewardId));
   };
 
-  function all() {
+  this.all = function () {
 
     console.log('in RewardService.all');
 
-    if (!_tasks) {
-      return $q.when(_db.allDocs({ include_docs: true }))
+    if (!_rewards) {
+      return $q.when(_db.allDocs({
+        include_docs: true,
+        startkey: POUCH_CONSTANTS.DOC_TYPES.REWARD,
+        endkey: POUCH_CONSTANTS.DOC_TYPES.REWARD + POUCH_CONSTANTS.WILDCARD,
+      }))
         .then(function (docs) {
-          _tasks = docs.rows.map(function (row) {
+          _rewards = docs.rows.map(function (row) {
             row.doc.Date = new Date(row.doc.Date);
             return row.doc;
           });
@@ -69,85 +66,40 @@ function RewardService(
             .on('change', function (change) {
               onDatabaseChange(change)
             });
-          console.log('Tasks list: ', _tasks);
-          return _tasks;
+
+          console.log('rewards list: ', _rewards);
+
+          return _rewards;
         })
     } else {
-      return $q.when(_task);
+      return $q.when(_rewards);
     };
   };
 
   function onDatabaseChange(change) {
 
-    var index = findIndex(_tasks, change.id);
-    var task = _tasks[index];
+    if (0 !== change.id.indexOf(POUCH_CONSTANTS.DOC_TYPES.REWARD)) {
+      return;
+    };
+
+    console.log('RewardService.onDatabasechange', change);
+
+    var index = PouchDbService.findIndex(_rewards, change.id);
+    var reward = _rewards[index];
 
     console.log('in RewardService.onDatabaseChange. Change: ', change, index);
 
     if (change.deleted) {
-      if (task) {
-        _tasks.splice(index, 1); // delete
+      if (reward) {
+        _rewards.splice(index, 1); // delete
       }
     } else {
-      if (task && task._id === change.id) {
-        _tasks[index] = change.doc; // update
+      if (reward && reward._id === change.id) {
+        _rewards[index] = change.doc; // update
       } else {
-        _tasks.splice(index, 0, change.doc) // insert
+        _rewards.splice(index, 0, change.doc) // insert
       }
     }
+
   };
-
-  function findIndex(array, id) {
-    console.log('in RewardService.findIndex ', array, id)
-    var low = 0, high = array.length, mid;
-    while (low < high) {
-      mid = (low + high) >>> 1;
-      array[mid]._id < id ? low = mid + 1 : high = mid
-    }
-    return low;
-  };
-
-  /**
-   * Generates a _id for each category with the prefix of cat_ 
-   */
-  function generateCategoryId(category) {
-
-    var now = new Date().getTime();
-    var prefix = "cat_";
-
-    var id = prefix +
-      pouchCollate.toIndexableString([
-        encodeURI(category.name), 
-        encodeURI(category.creator.name), 
-        now
-    ]);
-
-    id.replace(/\u0000/g, '\u0001');  // This part is to handle bug in chrome if syncing with remote db. see https://github.com/pouchdb/collate
-
-    console.log('in RewardService.generateCategoryId. _id: ', id);
-    return id; 
-  };
-
-  /**
-   * Dummy function to return a fixed list of categories
-   */
-  function getCategories() {
-
-    console.log('in RewardService.getCategories()');
-    
-    return [{
-      label: 'Cleaning',
-      img: 'img/categories/broom.png',
-      creator: {
-        name: 'system'
-      },
-    }, {
-      label: 'Stuff',
-      img: 'img/categories/price-tag.png',
-      creator: {
-        name: 'system'
-      },
-    }];
-  };
-
 };
