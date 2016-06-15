@@ -87,4 +87,9 @@ angular.module('starter.controllers', [])
   };
 
 })
+
+.controller('PromoCtrl', function () {
+
+  console.log('In PromoCtrl');
+})
 ;

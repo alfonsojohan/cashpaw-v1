@@ -190,7 +190,15 @@ angular.module('starter', [
       }
     })
 
-
+    .state('tab.promo', {
+      url: '/promo',
+      views: {
+        'tab-promo': {
+          templateUrl: 'templates/tab-promo.html',
+          controller: 'PromoCtrl as promoCtrl',
+        },
+      },
+    })
 
     .state('tab.rewards', {
       url: '/rewards',
@@ -200,7 +208,7 @@ angular.module('starter', [
           controller: 'RewardsCtrl as rewardsCtrl',
         },
       },
-    })
+    })    
 
     .state('tab.new-reward', {
       url: '/rewards/new',
