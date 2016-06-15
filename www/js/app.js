@@ -25,7 +25,7 @@ angular.module('starter', [
   };
 })  // eo directive hideTabs
 
-.run(function ($ionicPlatform, $ionicAnalytics, $rootScope, $location, PouchDbService) {
+.run(function ($ionicPlatform, $ionicAnalytics, $rootScope, $location, $state, $ionicHistory, PouchDbService) {
 
   $ionicPlatform.ready(function () {
 
@@ -52,7 +52,19 @@ angular.module('starter', [
     PouchDbService.init().then(function () {
       // PouchDbService.replicate();
       console.log('>>> PouchDbService.init() completed. Moving on...');
-      $location.path('/tab/dash');
+      
+      // Set the next view as the root view so that the user does not see
+      // the loading screen if they press the back key in android
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        disableBack: true,
+        historyRoot: true
+      });
+
+      $state.go('tab.tasks', null, {
+        location: 'replace'
+      });
+
       $rootScope.$apply();
     });
 
