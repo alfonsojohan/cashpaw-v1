@@ -131,14 +131,10 @@ angular.module('starter.controllers')
       return;
     };
 
-    if (_that.edit) {
-      RewardService.update(_that.reward);
-    } else {
-      RewardService.add(_that.reward);
-    };
-
-    $state.go('tab.rewards');
-    // UtilityService.goBack();
+    var fn = (_that.edit ? RewardService.update : RewardService.add);
+    fn(_that.reward).then(function () {
+      $state.go('tab.rewards');
+    });
   };
   
   /**
