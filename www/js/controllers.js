@@ -17,8 +17,11 @@ angular.module('starter.controllers', [])
   this.currentUser = UserService.currentUser();
   this.family = UserService.all();
 
+  var _progVal = 0;
+
   // Update app code with new release from Ionic Deploy
   this.doUpdate = function () {
+    _progVal = 0;
     console.log('in DashCtrl.doUpdate');
     deploy.update().then(function (res) {
       console.log('Ionic Deploy: Update Success! ', res);
@@ -28,6 +31,10 @@ angular.module('starter.controllers', [])
       console.log('Ionic Deploy: Update error! ', err);
     }, function (prog) {
       console.log('Ionic Deploy: Progress... ', prog);
+      if ((parseFloat(prog) - _progVal) >= 5.0) {
+        toastr.info('Downloading... ' + prog + '%');
+        _progVal = prog;
+      }
       _that.updateProgress = "Downloading... " + prog + '%';
       try {
         $scope.$apply();
@@ -88,8 +95,47 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PromoCtrl', function () {
+.controller('PromoCtrl', function (
+  $state,
+  $stateParams,
+  $ionicPopup,
+  PromoService,
+  RewardService,
+  UserService) {
 
   console.log('In PromoCtrl');
+
+  var _that = this;
+
+  if ($state.is('tab.promo-detail')) {
+    _that.promo = PromoService.get($stateParams.promoId);
+  }
+
+  this.promotions = PromoService.all();
+
+  this.viewPromo = function (promo) {
+    $state.go('tab.promo-detail', {
+      promoId: promo._id
+    })
+  };
+
+  this.addReward = function (promo) {
+
+    var reward = RewardService.create();
+
+    // Update the blank reward with promo data
+    reward.promo = promo;
+    reward.points = promo.points;
+    reward.name = promo.title;
+
+    RewardService.add(reward).then(function () {
+      $ionicPopup.show({
+        // title: 'Reward Added',
+        template: promo.title + ' has been added as a reward',
+        buttons: [{text: 'Hooray!'}]
+      });
+    });
+  };
+
 })
 ;

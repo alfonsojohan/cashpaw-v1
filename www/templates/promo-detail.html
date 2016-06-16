@@ -1,0 +1,10 @@
+<ion-view view-title="{{promoCtrl.promo.title}}">
+  <ion-content class="cp-promo">
+    <img ng-src="{{promoCtrl.promo.img}}">
+    <div class="padding">
+      <p class="points">Points: {{promoCtrl.promo.points}}</p>
+      {{promoCtrl.promo.notes}}
+      <button class="button button-block button-positive" ng-click="promoCtrl.addReward(promoCtrl.promo)">Add as Reward</button>
+    </div>
+  </ion-content>
+</ion-view>

@@ -19,6 +19,20 @@ function RewardService(
 
   console.log('in RewardService, db: ', _db);
 
+  /**
+   * Returns a blank reward. We use this to ensure the correct
+   * reward template is created
+   */
+  this.create = function () {
+    return {
+      _id: null,
+      assignee: null,
+      owner: UserService.currentUser(),
+      points: 0,
+      promo: null,
+    }
+  };
+
   this.add = function (reward) {
     reward.owner = UserService.currentUser();
     reward._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPES.REWARD, reward);

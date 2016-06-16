@@ -1,5 +1,13 @@
 <ion-view view-title="Promotions">
   <ion-content>
-    Promo list goes here
+    <ion-list>
+      <div class="item" ng-repeat="item in promoCtrl.promotions">
+      <ion-item class="cp-promo item-borderless" ng-click="promoCtrl.viewPromo(item)">
+        <div class="title">{{item.title}}</div>
+        <img ng-src="{{item.img}}">
+      </ion-item>
+      <button class="button button-block button-positive" ng-click="promoCtrl.addReward(item)">Add as Reward</button>
+      </div>
+    </ion-list>
   </ion-content>
 </ion-view>

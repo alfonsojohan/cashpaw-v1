@@ -200,6 +200,16 @@ angular.module('starter', [
       },
     })
 
+    .state('tab.promo-detail', {
+      url: '/promo/:promoId',
+      views: {
+        'tab-promo': {
+          templateUrl: 'templates/promo-detail.html',
+          controller: 'PromoCtrl as promoCtrl'
+        }
+      }
+    })
+
     .state('tab.rewards', {
       url: '/rewards',
       views: {

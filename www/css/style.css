@@ -32,3 +32,13 @@
 .toast-bottom-center {
   bottom: 70px !important;
 }
+.cp-promo img {
+  width: 100%;
+}
+.cp-promo .title {
+  font-size: 130%;
+  margin: 0 0 10px 0;
+}
+.cp-promo .points {
+  font-weight: bold;
+}
