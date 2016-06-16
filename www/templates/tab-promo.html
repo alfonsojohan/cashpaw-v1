@@ -6,7 +6,9 @@
         <div class="title">{{item.title}}</div>
         <img ng-src="{{item.img}}">
       </ion-item>
-      <button class="button button-block button-positive" ng-click="promoCtrl.addReward(item)">Add as Reward</button>
+      <button class="button button-block button-positive ion-android-download" ng-click="promoCtrl.addReward(item)">
+        Redeem ({{item.points}} pts)
+      </button>
       </div>
     </ion-list>
   </ion-content>

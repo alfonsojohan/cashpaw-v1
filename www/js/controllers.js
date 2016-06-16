@@ -121,20 +121,30 @@ angular.module('starter.controllers', [])
 
   this.addReward = function (promo) {
 
-    var reward = RewardService.create();
+    return _that.redeem(promo);
+    
+    // var reward = RewardService.create();
 
-    // Update the blank reward with promo data
-    reward.promo = promo;
-    reward.points = promo.points;
-    reward.name = promo.title;
+    // // Update the blank reward with promo data
+    // reward.promo = promo;
+    // reward.points = promo.points;
+    // reward.name = promo.title;
 
-    RewardService.add(reward).then(function () {
-      $ionicPopup.show({
-        // title: 'Reward Added',
-        template: promo.title + ' has been added as a reward',
+    // RewardService.add(reward).then(function () {
+    //   $ionicPopup.show({
+    //     // title: 'Reward Added',
+    //     template: promo.title + ' has been added as a reward',
+    //     buttons: [{text: 'Hooray!'}]
+    //   });
+    // });
+  };
+
+  this.redeem = function(promo) {
+     $ionicPopup.show({
+        title: 'Redeem Promotion',
+        template: 'TODO: Redeem ' + promo.title,
         buttons: [{text: 'Hooray!'}]
       });
-    });
   };
 
 })
