@@ -15,7 +15,7 @@ function UserService(
   var _deferred = null; 
   var _db = PouchDbService.db();
 
-  console.log('>>> in UserService. db: ', _db);
+  // console.log('>>> in UserService. db: ', _db);
 
   /**
    * Function to generate random number of points for each dummy user
@@ -63,8 +63,6 @@ function UserService(
  * Setup the ionicModal element for choosing a user
  */
   function setupChooser() {
-    console.log('>>> UserService setupChooser');
-
     $ionicModal.fromTemplateUrl('templates/family-list.html', {
       scope: null,
       animation: 'slide-in-up'
@@ -77,24 +75,29 @@ function UserService(
     setupChooser();
   }
 
-  // this.$on('destroy', function () {
-  //   _that.modal.remove();
-  // });
-
   /**
    * Set the currentUser for test purposes
    */
   this.user = this.users[0];
 
   this.all = function() {
-    console.log('in UserService.all', _that.users);
+    // console.log('in UserService.all', _that.users);
     return _that.users;
   };
 
   this.currentUser = function() {
-    console.log('in UserService.currentUser: ', _that.user);
+    console.log('<<< UserService.currentUser');
+    // console.log('in UserService.currentUser: ', _that.user);
     return _that.user;
   };
+
+  this.setCurrentUser = function (id) {
+    var usr = _that.get(id);
+    if(usr) {
+      _that.user = usr;
+    }
+    return usr;
+  }
 
   this.choose = function () {
     _deferred = $q.defer();

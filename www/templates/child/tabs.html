@@ -1,0 +1,23 @@
+  <ion-nav-bar class="bar-stable bar-assertive">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  
+<ion-tabs class="tabs-icon-top tabs-color-active-assertive">
+
+  <!-- Tasks Tab -->
+  <ion-tab title="Tasks" icon-off="ion-clipboard" icon-on="ion-clipboard" href="#/child/tasks">
+    <ion-nav-view name="child-tasks"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Rewards tab -->
+  <ion-tab title="Rewards" icon-on="ion-ribbon-b" icon-off="ion-ribbon-b" href="#/child/rewards">
+    <ion-nav-view name="child-rewards"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Family Tab -->
+  <ion-tab title="Family" icon-off="ion-android-people" icon-on="ion-android-people" href="#/tab/dash">
+    <ion-nav-view name="tab-dash"></ion-nav-view>
+  </ion-tab>
+
+</ion-tabs>

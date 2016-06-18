@@ -32,7 +32,7 @@ angular.module('starter.services', [])
   $ionicPopup,
   $ionicHistory) {
     
-    console.log('in UtilityService');
+    // console.log('in UtilityService');
 
     /**
      * Show a TODO alert
@@ -73,7 +73,7 @@ angular.module('starter.services', [])
 function PouchDbService(
   POUCH_CONSTANTS) {
 
-  console.log('>>> In PouchDbService');
+  // console.log('>>> In PouchDbService');
 
   var _db = null;
   var _that = this;
@@ -82,7 +82,7 @@ function PouchDbService(
    * Function to create if new, else will open existing db
    */
   this.init = function () {
-    console.log('>>> PouchDbService.init');
+    // console.log('>>> PouchDbService.init');
 
     _db = new PouchDB({
       name: POUCH_CONSTANTS.DB_NAME,
@@ -123,7 +123,7 @@ function PouchDbService(
    * Get the db instance
    */
   this.db = function () {
-    console.log('>>> PouchDbService.db');
+    // console.log('>>> PouchDbService.db');
     return _db;
   };
 
@@ -131,7 +131,7 @@ function PouchDbService(
    * Generate a new _id for different document types
    */
   this.newId = function (docType, obj) {
-    console.log('>>> PouchDbService.newId Type: ', docType, ' Obj: ', obj);
+    // console.log('>>> PouchDbService.newId Type: ', docType, ' Obj: ', obj);
 
     var now = new Date().getTime();
     var prefix = docType || 'unknown_type_' ;
@@ -173,7 +173,7 @@ function PouchDbService(
    * Get the specified element index based on id
    */
   this.findIndex = function (array, id) {
-    console.log('>>> PouchDbService.findIndex ', array, id)
+    // console.log('>>> PouchDbService.findIndex ', array, id)
     var low = 0, high = array.length, mid;
     while (low < high) {
       mid = (low + high) >>> 1;

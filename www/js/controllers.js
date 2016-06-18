@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function (
+  $state,
   UserService,
   toastr) {
 
@@ -10,7 +11,6 @@ angular.module('starter.controllers', [])
   this.uid = null;
   this.pwd = null;
 
-  // this.hasUpdate = false;
   this.updateText = "Check Updates";
   this.updateProgress = "";
 
@@ -18,6 +18,15 @@ angular.module('starter.controllers', [])
   this.family = UserService.all();
 
   var _progVal = 0;
+
+  this.switchView = function () {
+    if ($state.is('tab.dash')) {
+      $state.go('child.dash');
+      UserService.setCurrentUser('user_hermione');
+    } else {
+      $state.go('tab.dash');
+    }
+  };
 
   // Update app code with new release from Ionic Deploy
   this.doUpdate = function () {
@@ -56,7 +65,6 @@ angular.module('starter.controllers', [])
       function (hasUpdate) {
 
         console.log('Ionic Deploy: Update available: ' + hasUpdate);
-        // _that.hasUpdate = hasUpdate;
 
         if (!hasUpdate) {
           toastr.info('Congratulations. You have the latest update.');
@@ -119,24 +127,9 @@ angular.module('starter.controllers', [])
     })
   };
 
+  // Salah faham, so map this fn to the redeem fn
   this.addReward = function (promo) {
-
     return _that.redeem(promo);
-    
-    // var reward = RewardService.create();
-
-    // // Update the blank reward with promo data
-    // reward.promo = promo;
-    // reward.points = promo.points;
-    // reward.name = promo.title;
-
-    // RewardService.add(reward).then(function () {
-    //   $ionicPopup.show({
-    //     // title: 'Reward Added',
-    //     template: promo.title + ' has been added as a reward',
-    //     buttons: [{text: 'Hooray!'}]
-    //   });
-    // });
   };
 
   this.redeem = function(promo) {

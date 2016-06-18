@@ -8,6 +8,7 @@ angular.module('starter.services')
  */
 function TaskService(
   $q,
+  $rootScope,
   POUCH_CONSTANTS,
   PouchDbService) {
 
@@ -17,21 +18,10 @@ function TaskService(
 
   _that.currentTask = null;
 
-  console.log('in TaskService');
-
-  return {
-    all: all,
-    add: addTask,
-    update: updateTask,
-    remove: deleteTask,
-    get: getTask,
-    categories: getCategories,
-  };
-
   /**
    * Add a new task to the db
    */
-  function addTask(task) {
+  this.add = function (task) {
     // task._id = generateTaskId(task);
     task._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPES.TASK, task);
     console.log('in TaskService.addTask. Task: ', task);
@@ -41,7 +31,7 @@ function TaskService(
   /**
    * Updates an existing task in the db
    */
-  function updateTask(task) {
+  this.update = function (task) {
     console.log('in TaskService.updateTask', task);
     return $q.when(_db.put(task));
   };
@@ -49,7 +39,7 @@ function TaskService(
   /**
    * Delete an existing task from the db
    */
-  function deleteTask(task) {
+  this.remove = function (task) {
     console.log('in TaskService.deleteTask. Task:', task);
     return $q.when(_db.remove(task._id, task._rev));
   };
@@ -57,15 +47,42 @@ function TaskService(
   /**
    * Retrieve the task info based on the task _id from the db
    */
-  function getTask(taskId) {
+  this.get = function (taskId) {
     console.log('in TaskService.getTask _id: ', taskId);
     return $q.when(_db.get(taskId));
   };
 
   /**
+   * Find tasks belonging to a specific user
+   */
+  this.userTasks = function (user) {
+    
+    var mapFn = function (doc) {
+      if (0 == doc._id.indexOf('task_')) {
+        if (doc.assignee) {
+          emit(doc.assignee._id);
+        }
+      }
+    };
+
+    return $q.when(_db.query(mapFn, {
+      key: user._id,
+      include_docs: true
+    }).then(function (result) {
+
+      // Normalize the results before returning it
+      var a = [];
+      for(var i = 0; i < result.rows.length; i++) {
+        a.push(result.rows[i].doc);
+      }
+      return a;
+    }));
+  };
+
+  /**
    * Get all tasks
    */
-  function all() {
+  this.all = function () {
 
     console.log('in TaskService.all');
 
@@ -125,7 +142,7 @@ function TaskService(
   /**
    * Dummy function to return a fixed list of categories
    */
-  function getCategories() {
+  this.categories= function () {
 
     console.log('in TaskService.getCategories()');
     
