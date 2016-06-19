@@ -61,7 +61,8 @@ angular.module('starter', [
         historyRoot: true
       });
 
-      $state.go('tab.tasks', null, {
+      // $state.go('tab.tasks', null, {
+      $state.go('tab.dash', null, {
         location: 'replace'
       });
 

@@ -10,22 +10,29 @@ angular.module('starter.controllers', [])
 
   this.uid = null;
   this.pwd = null;
+  this.firstSwitch = true;
 
   this.updateText = "Check Updates";
   this.updateProgress = "";
 
   this.currentUser = UserService.currentUser();
   this.family = UserService.all();
-
+  
   var _progVal = 0;
 
   this.switchView = function () {
     if ($state.is('tab.dash')) {
-      $state.go('child.dash');
-      UserService.setCurrentUser('user_hermione');
+      $state.go('child.dash').then(function () {
+        UserService.setCurrentUser('user_hermione');
+      });
     } else {
-      $state.go('tab.dash');
+      $state.go('tab.dash').then(function () {
+        UserService.setCurrentUser('user_dad');
+      });
     }
+
+    // $state.reload();
+    console.log('<< _that.isChild ', _that.isChild);
   };
 
   // Update app code with new release from Ionic Deploy
