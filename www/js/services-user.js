@@ -119,13 +119,13 @@ function UserService(
   };
 
   this.addPoints = function (id, points) {
-    var u = this.get(id);
+    var u = _that.get(id);
     u.points = u.points + points;
     return u;
   };
 
   this.deletePoints = function (id, points) {
-    var u = this.get(id);
+    var u = _that.get(id);
     u.points = u.points - points;
     return u;
   };

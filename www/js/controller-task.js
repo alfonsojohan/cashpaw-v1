@@ -47,14 +47,14 @@ angular.module('starter.controllers')
    */
   this.resetTask = function () {
     this.task = {
-      id: null,
+      _id: null,
       duration: 0,
       name: null,
       note: null,
       points: 0,
       penalty: 0,
-      dueDate: null,
-      reminder: null,
+      dueDate: undefined,
+      reminder: undefined,
       category: null,
       assignee: null,
       owner: UserService.currentUser()
@@ -147,15 +147,16 @@ angular.module('starter.controllers')
     console.log('in onCheckChange.', task);
 
     var u = null;
+    var fn = (task.completed ? UserService.addPoints : UserService.deletePoints);
 
     // TODO add points
-    if (task.completed && task.assignee) {
-      u = UserService.addPoints(task.assignee._id, task.points);
-    } else {
-      u = UserService.deletePoints(task.assignee._id, task.points);
+    if (task.assignee) {
+      TaskService.update(task).then(function () {
+        u = fn(task.assignee._id, task.points);
+        toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
+      });
     }
 
-    toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
   };
 
   /**
