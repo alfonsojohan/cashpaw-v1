@@ -3,6 +3,7 @@ angular.module('starter.controllers', [])
 .controller('DashCtrl', function (
   $state,
   UserService,
+  PouchDbService,
   toastr) {
 
   var _that = this;
@@ -17,7 +18,7 @@ angular.module('starter.controllers', [])
 
   this.currentUser = UserService.currentUser();
   this.family = UserService.all();
-  
+
   var _progVal = 0;
 
   this.switchView = function () {
@@ -37,10 +38,18 @@ angular.module('starter.controllers', [])
 
   // Update app code with new release from Ionic Deploy
   this.doUpdate = function () {
+    /**
+      * Delete the old database
+      */
+    PouchDbService.db().destroy().then(function () {
+      console.log('<<< Database destroyed...');
+    });
+
     _progVal = 0;
     console.log('in DashCtrl.doUpdate');
     deploy.update().then(function (res) {
       console.log('Ionic Deploy: Update Success! ', res);
+
       window.alert('Update successful. App will restart now.');
       _that.updateProgress = "";
     }, function (err) {
@@ -52,11 +61,6 @@ angular.module('starter.controllers', [])
         _progVal = prog;
       }
       _that.updateProgress = "Downloading... " + prog + '%';
-      try {
-        $scope.$apply();
-      } catch (e) {
-        //do nothing
-      };
     });
   };
 
@@ -80,7 +84,7 @@ angular.module('starter.controllers', [])
           _that.doUpdate();
         };
 
-      }, 
+      },
       function (err) {
         toastr.error('Failed to check for updates: ', err);
         console.error('Ionic Deploy: Unable to check for updates', err);
@@ -139,12 +143,12 @@ angular.module('starter.controllers', [])
     return _that.redeem(promo);
   };
 
-  this.redeem = function(promo) {
-     $ionicPopup.show({
-        title: 'Redeem Promotion',
-        template: 'TODO: Redeem ' + promo.title,
-        buttons: [{text: 'Hooray!'}]
-      });
+  this.redeem = function (promo) {
+    $ionicPopup.show({
+      title: 'Redeem Promotion',
+      template: 'TODO: Redeem ' + promo.title,
+      buttons: [{ text: 'Hooray!' }]
+    });
   };
 
 })
