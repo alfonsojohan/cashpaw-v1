@@ -1,0 +1,25 @@
+<ion-view view-title="{{rewardsCtrl.headerTitle}}" hide-back-button="false">
+
+  <ion-content class="padding child-view">
+
+    <!-- Reward name -->
+    <h1 class="task-title text-center">{{rewardsCtrl.reward.name}}</h1>
+
+    <!-- Points button -->
+    <div class="row row-no-padding">
+      <div class="duration">
+        {{rewardsCtrl.reward.points}}<br />pts.
+      </div>
+    </div>
+
+    <!-- Notes section with auto-expanding textarea using angular-elastic -->
+    <div style="margin:10px 0 0 0;">
+      <div class="text-center">Notes</div>
+      <ion-item class="nl2br">{{rewardsCtrl.reward.note}}</ion-item>
+    </div>
+
+    <!-- extra line break to keep some spacing at bottom -->
+    <br>
+
+  </ion-content>
+</ion-view>

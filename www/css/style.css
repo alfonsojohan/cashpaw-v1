@@ -59,3 +59,6 @@
   font-size: 175%;
   color: #444;
 }
+.child-view .nl2br {
+  white-space:pre-wrap;
+}

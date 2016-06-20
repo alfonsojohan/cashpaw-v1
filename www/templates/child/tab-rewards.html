@@ -18,7 +18,7 @@
         <div class="col col-80 item-borderless">
           <ion-item class="item-remove-animate item-borderless item-avatar-right item-icon-right" type="item-text-wrap" ng-click="rewardsCtrl.view(reward)">
             <img ng-src="{{reward.assignee.img || 'img/smiley-flat.png'}}">
-            <h2 ng-class="{'reward-complete': reward.completed}">{{reward.name}}</h2>
+            <h2 ng-class="{'task-complete': reward.completed}">{{reward.name}}</h2>
             <p>{{reward.note}}</p>
           </ion-item>
         </div>

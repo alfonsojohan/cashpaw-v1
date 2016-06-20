@@ -116,4 +116,28 @@ function RewardService(
     }
 
   };
+
+  this.userRewards = function (user) {
+    
+    var mapFn = function (doc) {
+      if (0 == doc._id.indexOf('reward_')) {
+        if (doc.assignee) {
+          emit(doc.assignee._id);
+        }
+      }
+    };
+
+    return $q.when(_db.query(mapFn, {
+      key: user._id,
+      include_docs: true
+    }).then(function (result) {
+      // Normalize the results before returning it
+      var out = [];
+      for(var i = 0; i < result.rows.length; i++) {
+        out.push(result.rows[i].doc);
+      }
+      return out;
+    }));
+      
+  };
 };

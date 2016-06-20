@@ -2,6 +2,7 @@ angular.module('starter.controllers')
 
 .controller('RewardsCtrl', function (
   $state,
+  $scope,
   $stateParams,
   $ionicPopup,
   RewardService,
@@ -19,6 +20,19 @@ angular.module('starter.controllers')
   this.original = null;
   this.headerTitle = 'New Reward';
   this.edit = false;
+
+  $scope.$on('$ionicView.enter', function () {
+
+    if (!$state.is('child.rewards')) {
+      return;
+    }
+
+    console.log('<<< in reward view enter');
+    RewardService.userRewards(UserService.currentUser()).then(function (rewards) {
+      _that.rewards = rewards;
+    });
+  });
+
 
   /**
    * Selects the user to assign the reward to
@@ -40,7 +54,7 @@ angular.module('starter.controllers')
    */
   this.resetReward = function () {
     this.reward = {
-      id: null,
+      _id: null,
       name: null,
       note: null,
       points: 0,
@@ -75,6 +89,13 @@ angular.module('starter.controllers')
     RewardService.get($stateParams.rewardId).then(function (data) {
       _that.reward = data;
       _that.original = angular.copy(data);
+    });
+  } else if ($state.is('child.view-reward')) {
+    _that.edit = false;
+    _that.headerTitle = 'View Reward';
+
+    RewardService.get($stateParams.rewardId).then(function(r) {
+      _that.reward = r;
     });
   };
 
@@ -181,22 +202,23 @@ angular.module('starter.controllers')
       return;
     }
 
-    // TODO add points
-    toastr.info('TODO: Rewards redemption');
-    // if (reward.completed && reward.assignee) {
-    //   u = UserService.addPoints(reward.assignee._id, reward.points);
-    // } else {
-    //   u = UserService.deletePoints(reward.assignee._id, reward.points);
-    // }
-
-    // toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
+    var fn = (reward.completed ? UserService.deletePoints : UserService.addPoints);
+    // TODO Rewards redemption
+    if (reward.assignee) {
+      RewardService.update(reward).then(function () {
+        fn(reward.assignee._id, reward.points);
+        toastr.info('TODO: Rewards redemption');
+      });
+    }
   };
 
   /**
    * Display reward details when user click on the list item
    */
   this.view = function (reward) {
-    $state.go('tab.edit-reward', {
+
+    var nextState = ($state.is('tab.rewards') ? 'tab.edit-reward' : 'child.view-reward');
+    $state.go(nextState, {
       rewardId: reward._id
     });  
   };

@@ -272,7 +272,8 @@ angular.module('starter', [
         controller: 'TasksCtrl as taskCtrl'
       }
     }
-  })  .state('child.rewards', {
+  })  
+  .state('child.rewards', {
     url: '/rewards',
     views: {
       'child-rewards': {
@@ -281,7 +282,15 @@ angular.module('starter', [
       }
     }
   })
-
+  .state('child.view-reward', {
+    url: '/rewards/:rewardId',
+    views: {
+      'child-rewards': {
+        templateUrl: 'templates/child/new-reward.html',
+        controller: 'RewardsCtrl as rewardsCtrl'
+      }
+    }
+  })
   // if none of the above states are matched, use this as the fallback
   // $urlRouterProvider.otherwise('/tab/tasks');
   $urlRouterProvider.otherwise('/loading');
