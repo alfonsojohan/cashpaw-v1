@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
     }
 
     // $state.reload();
-    console.log('<< _that.isChild ', _that.isChild);
+    // console.log('<< _that.isChild ', _that.isChild);
   };
 
   // Update app code with new release from Ionic Deploy
@@ -42,20 +42,20 @@ angular.module('starter.controllers', [])
       * Delete the old database
       */
     PouchDbService.db().destroy().then(function () {
-      console.log('<<< Database destroyed...');
+      // console.log('<<< Database destroyed...');
     });
 
     _progVal = 0;
-    console.log('in DashCtrl.doUpdate');
+    // console.log('in DashCtrl.doUpdate');
     deploy.update().then(function (res) {
-      console.log('Ionic Deploy: Update Success! ', res);
+      // console.log('Ionic Deploy: Update Success! ', res);
 
       window.alert('Update successful. App will restart now.');
       _that.updateProgress = "";
     }, function (err) {
-      console.log('Ionic Deploy: Update error! ', err);
+      // console.log('Ionic Deploy: Update error! ', err);
     }, function (prog) {
-      console.log('Ionic Deploy: Progress... ', prog);
+      // console.log('Ionic Deploy: Progress... ', prog);
       if ((parseFloat(prog) - _progVal) >= 5.0) {
         toastr.info('Downloading... ' + prog + '%');
         _progVal = prog;
@@ -69,13 +69,13 @@ angular.module('starter.controllers', [])
    */
   this.checkUpdates = function () {
 
-    console.log('DashCtrl.checkUpdates');
+    // console.log('DashCtrl.checkUpdates');
     toastr.info('Checking for updates...');
 
     deploy.check().then(
       function (hasUpdate) {
 
-        console.log('Ionic Deploy: Update available: ' + hasUpdate);
+        // console.log('Ionic Deploy: Update available: ' + hasUpdate);
 
         if (!hasUpdate) {
           toastr.info('Congratulations. You have the latest update.');
@@ -87,7 +87,7 @@ angular.module('starter.controllers', [])
       },
       function (err) {
         toastr.error('Failed to check for updates: ', err);
-        console.error('Ionic Deploy: Unable to check for updates', err);
+        // console.error('Ionic Deploy: Unable to check for updates', err);
       });
   }; // eo checkUpdates
 
@@ -122,7 +122,7 @@ angular.module('starter.controllers', [])
   RewardService,
   UserService) {
 
-  console.log('In PromoCtrl');
+  // console.log('In PromoCtrl');
 
   var _that = this;
 

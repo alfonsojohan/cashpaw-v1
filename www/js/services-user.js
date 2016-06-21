@@ -86,7 +86,7 @@ function UserService(
   };
 
   this.currentUser = function() {
-    console.log('<<< UserService.currentUser');
+    // console.log('<<< UserService.currentUser');
     // console.log('in UserService.currentUser: ', _that.user);
     return _that.user;
   };

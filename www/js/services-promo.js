@@ -9,7 +9,7 @@ function PromoService() {
 
   var _that = this;
 
-  console.log('>>> in PromoService.');
+  // console.log('>>> in PromoService.');
 
   /**
    * Function to generate random number of points for each dummy user
@@ -44,7 +44,7 @@ function PromoService() {
   }];
 
   this.all = function() {
-    console.log('in PromoService.all', _that.promotions);
+    // console.log('in PromoService.all', _that.promotions);
     return _that.promotions;
   };
 

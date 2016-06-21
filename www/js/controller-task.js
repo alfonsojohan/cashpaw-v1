@@ -17,7 +17,7 @@ angular.module('starter.controllers')
   // Keep a reference to this
   var _that = this;
 
-  console.log('<<< TasksCtrl load. ', _that);
+  // console.log('<<< TasksCtrl load. ', _that);
 
   // Setup the properites
   this.headerTitle = 'New Task';
@@ -35,7 +35,7 @@ angular.module('starter.controllers')
     if (!$state.is('child.tasks')) {
       return;
     }
-    console.log('>>> TasksCtrl -> $ionicView.enter')
+    // console.log('>>> TasksCtrl -> $ionicView.enter')
     TaskService.userTasks(UserService.currentUser())
     .then(function (result) {
       _that.tasks = result;

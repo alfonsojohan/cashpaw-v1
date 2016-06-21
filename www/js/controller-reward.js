@@ -27,7 +27,7 @@ angular.module('starter.controllers')
       return;
     }
 
-    console.log('<<< in reward view enter');
+    // console.log('<<< in reward view enter');
     RewardService.userRewards(UserService.currentUser()).then(function (rewards) {
       _that.rewards = rewards;
     });
@@ -39,7 +39,7 @@ angular.module('starter.controllers')
    */
   this.selectUser = function () {
     UserService.choose().then(function (result){
-      console.log('RewardsCtrl.selectUser complete', result);
+      // console.log('RewardsCtrl.selectUser complete', result);
 
       // User cancelled selection
       if (!angular.isObject(result[0])) {
@@ -121,7 +121,7 @@ angular.module('starter.controllers')
    */
   function validate(reward) {
 
-    console.log('RewardsCtrl validate');
+    // console.log('RewardsCtrl validate');
 
     var result = {
       valid: false,
@@ -142,7 +142,7 @@ angular.module('starter.controllers')
    */
   this.save = function () {
 
-    console.log('RewardsCtrl.save');
+    // console.log('RewardsCtrl.save');
 
     // var result = {valid: true}; //_that.validatereward(_that.reward);
     var result = validate(_that.reward);
@@ -163,7 +163,7 @@ angular.module('starter.controllers')
    * updated
    */
   this.remove = function (reward) {
-    console.log('in RewardsCtrl.remove ', reward);
+    // console.log('in RewardsCtrl.remove ', reward);
     RewardService.remove(reward).then(function () {
       $state.reload();
     });
@@ -173,7 +173,7 @@ angular.module('starter.controllers')
    * Delete reward from new-reward view
    */
   this.removeFromDetailView = function (reward) {
-    console.log('RewardsCtrl.removeFromDetailView', reward);
+    // console.log('RewardsCtrl.removeFromDetailView', reward);
 
     $ionicPopup.confirm({
       title: 'Delete Reward',
@@ -194,7 +194,7 @@ angular.module('starter.controllers')
    */
   this.onCheckChange = function (reward) {
 
-    console.log('in onCheckChange.', reward);
+    // console.log('in onCheckChange.', reward);
 
     var u = null;
 

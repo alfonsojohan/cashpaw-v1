@@ -24,7 +24,7 @@ function TaskService(
   this.add = function (task) {
     // task._id = generateTaskId(task);
     task._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPES.TASK, task);
-    console.log('in TaskService.addTask. Task: ', task);
+    // console.log('in TaskService.addTask. Task: ', task);
     return $q.when(_db.put(task));
   };
 
@@ -32,7 +32,7 @@ function TaskService(
    * Updates an existing task in the db
    */
   this.update = function (task) {
-    console.log('in TaskService.updateTask', task);
+    // console.log('in TaskService.updateTask', task);
     return $q.when(_db.put(task));
   };
 
@@ -40,7 +40,7 @@ function TaskService(
    * Delete an existing task from the db
    */
   this.remove = function (task) {
-    console.log('in TaskService.deleteTask. Task:', task);
+    // console.log('in TaskService.deleteTask. Task:', task);
     return $q.when(_db.remove(task._id, task._rev));
   };
 
@@ -48,7 +48,7 @@ function TaskService(
    * Retrieve the task info based on the task _id from the db
    */
   this.get = function (taskId) {
-    console.log('in TaskService.getTask _id: ', taskId);
+    // console.log('in TaskService.getTask _id: ', taskId);
     return $q.when(_db.get(taskId));
   };
 
@@ -84,7 +84,7 @@ function TaskService(
    */
   this.all = function () {
 
-    console.log('in TaskService.all');
+    // console.log('in TaskService.all');
 
     if (!_tasks) {
       return $q.when(_db.allDocs({ 
@@ -107,7 +107,7 @@ function TaskService(
             .on('change', function (change) {
               onDatabaseChange(change)
             });
-          console.log('TaskService.all: Tasks list: ', _tasks);
+          // console.log('TaskService.all: Tasks list: ', _tasks);
           return _tasks;
         })
     } else {
@@ -117,7 +117,7 @@ function TaskService(
 
   function onDatabaseChange(change) {
 
-    console.log('in TaskService.onDatabaseChange. Change: ', change);
+    // console.log('in TaskService.onDatabaseChange. Change: ', change);
 
     if (-1 == change.id.indexOf(POUCH_CONSTANTS.DOC_TYPES.TASK)) {
       return;
@@ -144,7 +144,7 @@ function TaskService(
    */
   this.categories= function () {
 
-    console.log('in TaskService.getCategories()');
+    // console.log('in TaskService.getCategories()');
     
     return [{
       label: 'Cleaning',

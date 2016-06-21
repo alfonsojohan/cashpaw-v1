@@ -61,8 +61,8 @@ angular.module('starter', [
         historyRoot: true
       });
 
-      // $state.go('tab.tasks', null, {
-      $state.go('tab.dash', null, {
+      $state.go('tab.tasks', null, {
+      // $state.go('child.finance', null, {
         location: 'replace'
       });
 
@@ -288,6 +288,15 @@ angular.module('starter', [
       'child-rewards': {
         templateUrl: 'templates/child/new-reward.html',
         controller: 'RewardsCtrl as rewardsCtrl'
+      }
+    }
+  })
+  .state('child.finance', {
+    url: '/finance',
+    views: {
+      'child-finance': {
+        templateUrl: 'templates/child/finance.html',
+        controller: 'MoneyCtrl as moneyCtrl'
       }
     }
   })
