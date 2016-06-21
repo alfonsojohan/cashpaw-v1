@@ -4,6 +4,8 @@ angular.module('starter.controllers')
   $state,
   $ionicPopup,
   $stateParams,
+  $rootScope,
+  $scope,
   ionicDatePicker,
   ionicTimePicker,
   TaskService,
@@ -15,6 +17,8 @@ angular.module('starter.controllers')
   // Keep a reference to this
   var _that = this;
 
+  // console.log('<<< TasksCtrl load. ', _that);
+
   // Setup the properites
   this.headerTitle = 'New Task';
   this.task = null;
@@ -24,18 +28,33 @@ angular.module('starter.controllers')
   this.categories = [];
 
   /**
+   * For the child tasks we need to track the view enter event
+   * to refresh the child's tasks.
+   */
+  $scope.$on('$ionicView.enter', function () {
+    if (!$state.is('child.tasks')) {
+      return;
+    }
+    // console.log('>>> TasksCtrl -> $ionicView.enter')
+    TaskService.userTasks(UserService.currentUser())
+    .then(function (result) {
+      _that.tasks = result;
+    });  
+  });
+
+  /**
    * Reset current task to a known state
    */
   this.resetTask = function () {
     this.task = {
-      id: null,
+      _id: null,
       duration: 0,
       name: null,
       note: null,
       points: 0,
       penalty: 0,
-      dueDate: null,
-      reminder: null,
+      dueDate: undefined,
+      reminder: undefined,
       category: null,
       assignee: null,
       owner: UserService.currentUser()
@@ -83,6 +102,10 @@ angular.module('starter.controllers')
   } else if ($state.is('categories')) {
     _that.categories = TaskService.categories();
     console.log('in category state', _that.categories);
+  } else if ($state.is('child.view-task')) {
+    TaskService.get($stateParams.taskId).then(function (data) {
+      _that.task = data;
+    });
   }
 
   /**
@@ -124,24 +147,31 @@ angular.module('starter.controllers')
     console.log('in onCheckChange.', task);
 
     var u = null;
+    var fn = (task.completed ? UserService.addPoints : UserService.deletePoints);
 
     // TODO add points
-    if (task.completed && task.assignee) {
-      u = UserService.addPoints(task.assignee._id, task.points);
-    } else {
-      u = UserService.deletePoints(task.assignee._id, task.points);
+    if (task.assignee) {
+      TaskService.update(task).then(function () {
+        u = fn(task.assignee._id, task.points);
+        toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
+      });
     }
 
-    toastr.info(u.name + ' has ' + numberFilter(u.points, 0) + ' points', 'Hooray!');
   };
 
   /**
    * Display task details when user click on the list item
    */
   this.viewTask = function (task) {
-    $state.go('tab.edit-task', {
-      taskId: task._id
-    });
+    if ($state.is('child.tasks')) {
+      $state.go('child.view-task', {
+        taskId: task._id
+      });
+    } else {
+      $state.go('tab.edit-task', {
+        taskId: task._id
+      });
+    }
   };
 
   /**

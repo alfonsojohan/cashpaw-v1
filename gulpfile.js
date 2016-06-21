@@ -49,3 +49,18 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+/**
+ * A. Johan 
+ * My own gulp tasks
+ * see:
+ * https://blogs.msdn.microsoft.com/vscode/2015/06/04/mobile-hybrid-apps-with-vs-code-and-ionic/
+ */
+gulp.task('serve', function(done) {
+  sh.exec('ionic serve');
+  done();
+});
+gulp.task('run android', function(done) {
+  sh.exec('ionic run android');
+  done();
+});

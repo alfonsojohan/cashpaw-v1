@@ -4,7 +4,7 @@ angular.module('starter.controllers')
 
   var _that = this;
 
-  console.log('in UserCtrl');
+  // console.log('in UserCtrl');
 
   _that.users = UserService.all();
 

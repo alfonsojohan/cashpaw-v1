@@ -1,11 +1,7 @@
 <ion-view view-title="Rewards">
 
-  <ion-nav-buttons side="right">
-    <button class="button button-clear button-icon ion-plus" ui-sref="tab.new-reward"></button>
-  </ion-nav-buttons>
-
   <ion-content>
-    <p ng-hide="rewardsCtrl.rewards.length" class="aj-empty-list padding">Start rewarding. Click on + to add something fun!.</p>
+    <p ng-hide="rewardsCtrl.rewards.length" class="aj-empty-list padding">Hmm...no rewards yet.</p>
 
     <ion-list>
       <div class="row row-no-padding item" ng-repeat="reward in rewardsCtrl.rewards">
@@ -24,9 +20,6 @@
             <img ng-src="{{reward.assignee.img || 'img/smiley-flat.png'}}">
             <h2 ng-class="{'task-complete': reward.completed}">{{reward.name}}</h2>
             <p>{{reward.note}}</p>
-
-            <!-- Delete button on swipe -->
-            <ion-option-button class="button-assertive" ng-click="rewardsCtrl.remove(reward)">Delete</ion-option-button>
           </ion-item>
         </div>
       </div>

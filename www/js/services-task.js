@@ -8,6 +8,7 @@ angular.module('starter.services')
  */
 function TaskService(
   $q,
+  $rootScope,
   POUCH_CONSTANTS,
   PouchDbService) {
 
@@ -17,57 +18,73 @@ function TaskService(
 
   _that.currentTask = null;
 
-  console.log('in TaskService');
-
-  return {
-    all: all,
-    add: addTask,
-    update: updateTask,
-    remove: deleteTask,
-    get: getTask,
-    categories: getCategories,
-  };
-
   /**
    * Add a new task to the db
    */
-  function addTask(task) {
+  this.add = function (task) {
     // task._id = generateTaskId(task);
     task._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPES.TASK, task);
-    console.log('in TaskService.addTask. Task: ', task);
+    // console.log('in TaskService.addTask. Task: ', task);
     return $q.when(_db.put(task));
   };
 
   /**
    * Updates an existing task in the db
    */
-  function updateTask(task) {
-    console.log('in TaskService.updateTask', task);
+  this.update = function (task) {
+    // console.log('in TaskService.updateTask', task);
     return $q.when(_db.put(task));
   };
 
   /**
    * Delete an existing task from the db
    */
-  function deleteTask(task) {
-    console.log('in TaskService.deleteTask. Task:', task);
+  this.remove = function (task) {
+    // console.log('in TaskService.deleteTask. Task:', task);
     return $q.when(_db.remove(task._id, task._rev));
   };
 
   /**
    * Retrieve the task info based on the task _id from the db
    */
-  function getTask(taskId) {
-    console.log('in TaskService.getTask _id: ', taskId);
+  this.get = function (taskId) {
+    // console.log('in TaskService.getTask _id: ', taskId);
     return $q.when(_db.get(taskId));
+  };
+
+  /**
+   * Find tasks belonging to a specific user
+   */
+  this.userTasks = function (user) {
+    
+    var mapFn = function (doc) {
+      if (0 == doc._id.indexOf('task_')) {
+        if (doc.assignee) {
+          emit(doc.assignee._id);
+        }
+      }
+    };
+
+    return $q.when(_db.query(mapFn, {
+      key: user._id,
+      include_docs: true
+    }).then(function (result) {
+
+      // Normalize the results before returning it
+      var a = [];
+      for(var i = 0; i < result.rows.length; i++) {
+        a.push(result.rows[i].doc);
+      }
+      return a;
+    }));
   };
 
   /**
    * Get all tasks
    */
-  function all() {
+  this.all = function () {
 
-    console.log('in TaskService.all');
+    // console.log('in TaskService.all');
 
     if (!_tasks) {
       return $q.when(_db.allDocs({ 
@@ -90,7 +107,7 @@ function TaskService(
             .on('change', function (change) {
               onDatabaseChange(change)
             });
-          console.log('TaskService.all: Tasks list: ', _tasks);
+          // console.log('TaskService.all: Tasks list: ', _tasks);
           return _tasks;
         })
     } else {
@@ -100,7 +117,7 @@ function TaskService(
 
   function onDatabaseChange(change) {
 
-    console.log('in TaskService.onDatabaseChange. Change: ', change);
+    // console.log('in TaskService.onDatabaseChange. Change: ', change);
 
     if (-1 == change.id.indexOf(POUCH_CONSTANTS.DOC_TYPES.TASK)) {
       return;
@@ -125,9 +142,9 @@ function TaskService(
   /**
    * Dummy function to return a fixed list of categories
    */
-  function getCategories() {
+  this.categories= function () {
 
-    console.log('in TaskService.getCategories()');
+    // console.log('in TaskService.getCategories()');
     
     return [{
       label: 'Cleaning',

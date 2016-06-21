@@ -1,0 +1,98 @@
+<ion-view view-title="{{taskCtrl.headerTitle}}" hide-back-button="false">
+  <ion-content class="padding child-view">
+
+    <!-- Task name -->
+    <h1 class="text-center task-title">{{taskCtrl.task.name}}</h1>
+
+    <!-- Duration and points button -->
+    <div class="row padding">
+      <div class="col col-50 col-center">
+        <div class="text-center">Duration</div>
+        <div class="row">
+          <div class="duration">
+            {{taskCtrl.task.duration}}<br />mins.
+          </div>
+        </div>
+      </div>
+      <div class="col col-50 col-center text-center">
+        <div class="text-center">Points</div>
+        <div class="row">
+          <div class="duration">
+            {{taskCtrl.task.points}}<br />pts.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Due date, repeat, reminder & penalty section -->
+    <ion-list class="row-no-padding">
+      <div class="list">
+
+        <div class="row row-no-padding item">
+          <div class="col col-50 col-center item-borderless">
+            <ion-item class="item-borderless item">
+              <i class="ion-calendar"> Due Date</i>
+            </ion-item>
+          </div>
+          <div class="col col-50 item-borderless col-center">
+            {{taskCtrl.task.dueDate || 'Nothing here...'}}
+          </div>
+        </div>
+
+        <div class="row row-no-padding item" ng-show="taskCtrl.task.dueDate">
+          <div class="col col-50 col-center item-borderless">
+            <ion-item class="item-borderless item">
+              <i class="ion-ios-bell"> Reminder</i>
+            </ion-item>
+          </div>
+          <div class="col col-50 item-borderless">
+            {{taskCtrl.task.reminder || 'Nothing here...'}}
+          </div>
+        </div>
+
+        <div class="row row-no-padding item">
+          <div class="col col-50 col-center item-borderless">
+            <ion-item class="item-borderless item">
+              <i class="ion-sad-outline"> Penalty</i>
+            </ion-item>
+          </div>
+          <div class="col col-50 item-borderless col-center">
+            {{taskCtrl.penaltyLabel || 'Nothing here...'}}
+          </div>
+        </div>
+      </div>
+    </ion-list>
+
+    <!-- Category section -->
+    <br>
+    <div class="text-center">Category</div>
+    <ion-item class="item item-avatar col-center">
+      <img ng-src="{{taskCtrl.task.category.img || 'img/smiley-flat.png'}}">&nbsp;
+      <span ng-bind-template="{{taskCtrl.task.category.label || 'Nothing here...'}}"></span>
+    </ion-item>
+
+    <!-- Notes section with auto-expanding textarea using angular-elastic -->
+    <div style="margin:10px 0 0 0;">
+      <div class="text-center">Notes</div>
+      <div class="item" style="white-space:pre-wrap;">{{taskCtrl.task.note}}</div>
+      <!--<label class="item item-input">-->
+      <!--<textarea ng-model="taskCtrl.task.note" placeholder="Anything to add?" class="msd-elastic"></textarea>-->
+      <!--</label>-->
+    </div>
+
+    <!-- extra line break to keep some spacing at bottom -->
+    <br>
+
+    <!-- Only visible for edit tasks, the history and delete button -->
+    <!--<div class="row row-no-padding" ng-if="taskCtrl.edit">-->
+    <!--<div class="col col-50">-->
+    <!--<button class="button button-block ion-clock button-stable" ng-click="taskCtrl.todoStub()">&nbsp;History</button>-->
+    <!--</div>-->
+    <!--<div style="width:5px;">&nbsp;</div>-->
+    <!--<div class="col col-50">-->
+    <!--<button class="button button-block ion-ios-trash" ng-click="taskCtrl.removeFromDetailView(taskCtrl.task)">&nbsp;Delete</button>-->
+    <!--</div>-->
+    <!--</div>-->
+
+  </ion-content>
+</ion-view>

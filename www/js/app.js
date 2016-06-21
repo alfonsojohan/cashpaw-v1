@@ -62,6 +62,7 @@ angular.module('starter', [
       });
 
       $state.go('tab.tasks', null, {
+      // $state.go('child.finance', null, {
         location: 'replace'
       });
 
@@ -126,131 +127,179 @@ angular.module('starter', [
    * Setup the states and routes
    */
   $stateProvider
-
-    .state('loading', {
-      url: '/loading',
-      templateUrl: 'templates/loading.html',
-    })
-
-    // setup an abstract state for the tabs directive
-    .state('tab', {
-      url: '/tab',
-      abstract: true,
-      templateUrl: 'templates/tabs.html'
-    })
-
-    .state('tab.dash', {
-      url: '/dash',
-      views: {
-        'tab-dash': {
-          templateUrl: 'templates/tab-dash.html',
-          controller: 'DashCtrl as dashCtrl'
-        }
+  .state('loading', {
+    url: '/loading',
+    templateUrl: 'templates/loading.html',
+  })
+  // setup an abstract state for the tabs directive
+  .state('tab', {
+    url: '/tab',
+    abstract: true,
+    templateUrl: 'templates/tabs.html'
+  })
+  .state('tab.dash', {
+    url: '/dash',
+    views: {
+      'tab-dash': {
+        templateUrl: 'templates/tab-dash.html',
+        controller: 'DashCtrl as dashCtrl'
       }
-    })
-    
-      //TODO remove the below state for production
-    .state('tab.test', {
-      url: '/test',
-      views: {
-        'tab-test': {
-          templateUrl: 'templates/test.html',
-          // controller: 'TestCtrl '
-        }
+    }
+  })
+    //TODO remove the below state for production
+  .state('tab.test', {
+    url: '/test',
+    views: {
+      'tab-test': {
+        templateUrl: 'templates/test.html',
+        // controller: 'TestCtrl '
       }
-    })
-    // Each tab has its own nav history stack:
-    .state('tab.tasks', {
-      url: '/tasks',
-      views: {
-        'tab-tasks': {
-          templateUrl: 'templates/tab-tasks.html',
-          controller: 'TasksCtrl as taskCtrl'
-        }
+    }
+  })
+  // Each tab has its own nav history stack:
+  .state('tab.tasks', {
+    url: '/tasks',
+    views: {
+      'tab-tasks': {
+        templateUrl: 'templates/tab-tasks.html',
+        controller: 'TasksCtrl as taskCtrl'
       }
-    })
-
-    .state('tab.new-task', {
-      url: '/tasks/new',
-      views: {
-        'tab-tasks': {
-          templateUrl: 'templates/new-task.html',
-          controller: 'TasksCtrl as taskCtrl'
-        }
+    }
+  })
+  .state('tab.new-task', {
+    url: '/tasks/new',
+    views: {
+      'tab-tasks': {
+        templateUrl: 'templates/new-task.html',
+        controller: 'TasksCtrl as taskCtrl'
       }
-    })
-
-    .state('tab.edit-task', {
-      url: '/tasks/:taskId',
-      views: {
-        'tab-tasks': {
-          templateUrl: 'templates/new-task.html',
-          controller: 'TasksCtrl as taskCtrl'
-        }
+    }
+  })
+  .state('tab.edit-task', {
+    url: '/tasks/:taskId',
+    views: {
+      'tab-tasks': {
+        templateUrl: 'templates/new-task.html',
+        controller: 'TasksCtrl as taskCtrl'
       }
-    })
-
-    .state('tab.promo', {
-      url: '/promo',
-      views: {
-        'tab-promo': {
-          templateUrl: 'templates/tab-promo.html',
-          controller: 'PromoCtrl as promoCtrl',
-        },
+    }
+  })
+  .state('tab.promo', {
+    url: '/promo',
+    views: {
+      'tab-promo': {
+        templateUrl: 'templates/tab-promo.html',
+        controller: 'PromoCtrl as promoCtrl',
       },
-    })
-
-    .state('tab.promo-detail', {
-      url: '/promo/:promoId',
-      views: {
-        'tab-promo': {
-          templateUrl: 'templates/promo-detail.html',
-          controller: 'PromoCtrl as promoCtrl'
-        }
+    },
+  })
+  .state('tab.promo-detail', {
+    url: '/promo/:promoId',
+    views: {
+      'tab-promo': {
+        templateUrl: 'templates/promo-detail.html',
+        controller: 'PromoCtrl as promoCtrl'
       }
-    })
-
-    .state('tab.rewards', {
-      url: '/rewards',
-      views: {
-        'tab-rewards': {
-          templateUrl: 'templates/tab-rewards.html',
-          controller: 'RewardsCtrl as rewardsCtrl',
-        },
+    }
+  })
+  .state('tab.rewards', {
+    url: '/rewards',
+    views: {
+      'tab-rewards': {
+        templateUrl: 'templates/tab-rewards.html',
+        controller: 'RewardsCtrl as rewardsCtrl',
       },
-    })    
-
-    .state('tab.new-reward', {
-      url: '/rewards/new',
-      views: {
-        'tab-rewards': {
-          templateUrl: 'templates/new-reward.html',
-          controller: 'RewardsCtrl as rewardsCtrl'
-        }
+    },
+  })    
+  .state('tab.new-reward', {
+    url: '/rewards/new',
+    views: {
+      'tab-rewards': {
+        templateUrl: 'templates/new-reward.html',
+        controller: 'RewardsCtrl as rewardsCtrl'
       }
-    })
-
-    .state('tab.edit-reward', {
-      url: '/rewards/:rewardId',
-      views: {
-        'tab-rewards': {
-          templateUrl: 'templates/new-reward.html',
-          controller: 'RewardsCtrl as rewardsCtrl'
-        }
+    }
+  })
+  .state('tab.edit-reward', {
+    url: '/rewards/:rewardId',
+    views: {
+      'tab-rewards': {
+        templateUrl: 'templates/new-reward.html',
+        controller: 'RewardsCtrl as rewardsCtrl'
       }
-    })
-
-    .state('register', {
-      url: '/register',
-      templateUrl: 'templates/register.html',
-    })
-
-    .state('categories', {
-      url: '/categories',
-      templateUrl: 'templates/categories.html',
-      controller: 'CategoryCtrl as categoryCtrl'
-    })
-
+    }
+  })
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/register.html',
+  })
+  .state('categories', {
+    url: '/categories',
+    templateUrl: 'templates/categories.html',
+    controller: 'CategoryCtrl as categoryCtrl'
+  })
+  /**
+   * Start of child view states
+   */
+  .state('child', {
+    url: '/child',
+    abstract: true,
+    templateUrl: 'templates/child/tabs.html',
+  })
+  .state('child.dash', {
+    url: '/dash',
+    views: {
+      'tab-dash': {
+        templateUrl: 'templates/tab-dash.html',
+        controller: 'DashCtrl as dashCtrl'
+      }
+    }
+  })    
+  .state('child.tasks', {
+    url: '/tasks',
+    views: {
+      'child-tasks': {
+        templateUrl: 'templates/child/tab-tasks.html',
+        controller: 'TasksCtrl as taskCtrl'
+      }
+    },
+  })
+  .state('child.view-task', {
+    url: '/tasks/:taskId',
+    views: {
+      'child-tasks': {
+        templateUrl: 'templates/child/new-task.html',
+        controller: 'TasksCtrl as taskCtrl'
+      }
+    }
+  })  
+  .state('child.rewards', {
+    url: '/rewards',
+    views: {
+      'child-rewards': {
+        templateUrl: 'templates/child/tab-rewards.html',
+        controller: 'RewardsCtrl as rewardsCtrl'
+      }
+    }
+  })
+  .state('child.view-reward', {
+    url: '/rewards/:rewardId',
+    views: {
+      'child-rewards': {
+        templateUrl: 'templates/child/new-reward.html',
+        controller: 'RewardsCtrl as rewardsCtrl'
+      }
+    }
+  })
+  .state('child.finance', {
+    url: '/finance',
+    views: {
+      'child-finance': {
+        templateUrl: 'templates/child/finance.html',
+        controller: 'MoneyCtrl as moneyCtrl'
+      }
+    }
+  })
   // if none of the above states are matched, use this as the fallback
   // $urlRouterProvider.otherwise('/tab/tasks');
   $urlRouterProvider.otherwise('/loading');

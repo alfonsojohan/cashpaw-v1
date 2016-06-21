@@ -17,7 +17,7 @@ function RewardService(
 
   _that.currentReward = null;
 
-  console.log('in RewardService, db: ', _db);
+  // console.log('in RewardService, db: ', _db);
 
   /**
    * Returns a blank reward. We use this to ensure the correct
@@ -36,28 +36,28 @@ function RewardService(
   this.add = function (reward) {
     reward.owner = UserService.currentUser();
     reward._id = PouchDbService.newId(POUCH_CONSTANTS.DOC_TYPES.REWARD, reward);
-    console.log('in RewardService.add. ', reward);
+    // console.log('in RewardService.add. ', reward);
     return $q.when(_db.put(reward));
   };
 
   this.remove = function (reward) {
-    console.log('in RewardService.remove. reward:', reward);
+    // console.log('in RewardService.remove. reward:', reward);
     return $q.when(_db.remove(reward._id, reward._rev));
   };
 
   this.update = function (reward) {
-    console.log('in RewardService.update', reward);
+    // console.log('in RewardService.update', reward);
     return $q.when(_db.put(reward));
   };
 
   this.get = function (rewardId) {
-    console.log('in RewardService.getreward', rewardId);
+    // console.log('in RewardService.getreward', rewardId);
     return $q.when(_db.get(rewardId));
   };
 
   this.all = function () {
 
-    console.log('in RewardService.all');
+    // console.log('in RewardService.all');
 
     if (!_rewards) {
       return $q.when(_db.allDocs({
@@ -81,7 +81,7 @@ function RewardService(
               onDatabaseChange(change)
             });
 
-          console.log('rewards list: ', _rewards);
+          // console.log('rewards list: ', _rewards);
 
           return _rewards;
         })
@@ -96,12 +96,12 @@ function RewardService(
       return;
     };
 
-    console.log('RewardService.onDatabasechange', change);
+    // console.log('RewardService.onDatabasechange', change);
 
     var index = PouchDbService.findIndex(_rewards, change.id);
     var reward = _rewards[index];
 
-    console.log('in RewardService.onDatabaseChange. Change: ', change, index);
+    // console.log('in RewardService.onDatabaseChange. Change: ', change, index);
 
     if (change.deleted) {
       if (reward) {
@@ -115,5 +115,29 @@ function RewardService(
       }
     }
 
+  };
+
+  this.userRewards = function (user) {
+    
+    var mapFn = function (doc) {
+      if (0 == doc._id.indexOf('reward_')) {
+        if (doc.assignee) {
+          emit(doc.assignee._id);
+        }
+      }
+    };
+
+    return $q.when(_db.query(mapFn, {
+      key: user._id,
+      include_docs: true
+    }).then(function (result) {
+      // Normalize the results before returning it
+      var out = [];
+      for(var i = 0; i < result.rows.length; i++) {
+        out.push(result.rows[i].doc);
+      }
+      return out;
+    }));
+      
   };
 };

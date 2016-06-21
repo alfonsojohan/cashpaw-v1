@@ -42,3 +42,42 @@
 .cp-promo .points {
   font-weight: bold;
 }
+.child-view .duration {
+  border: solid 5px rgba(228, 33, 18, 0.69);
+  border-radius: 75px;
+  width: 100px;
+  height: 100px;
+  padding: 25px 0 0 0;
+  margin: 0 auto;
+  text-align: center;  
+  font-size: 125%;
+  font-weight: bolder;
+  background-color: rgba(241, 114, 114, 0.72);
+  color: #444;
+}
+.child-view .task-title {
+  font-size: 175%;
+  color: #444;
+}
+.child-view .nl2br {
+  white-space:pre-wrap;
+}
+.child-view .money-balance {
+  font-size: 150%;
+}
+.money-description {
+  font-size: 75%;
+}
+.money-amount {
+  text-align: right;
+  font-size: 125%;
+}
+.money-account {
+  font-size: 75%;
+  color: #ffffff !important;
+  /*text-align: right;*/
+}
+.money-credit {
+  background-color: rgba(60, 60, 255, 0.7);
+  color: #fff;
+}
