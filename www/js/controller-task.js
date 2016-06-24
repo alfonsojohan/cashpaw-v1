@@ -4,8 +4,8 @@ angular.module('starter.controllers')
   $state,
   $ionicPopup,
   $stateParams,
-  $rootScope,
   $scope,
+  $ionicAnalytics,
   ionicDatePicker,
   ionicTimePicker,
   TaskService,
@@ -78,6 +78,7 @@ angular.module('starter.controllers')
 
   } else if ($state.is('tab.new-task')) {
 
+    $ionicAnalytics.track('NEW_TASK', _that.task);
     _that.edit = false;
     _that.headerTitle = 'New Task';
     _that.categories = TaskService.categories();
@@ -94,6 +95,7 @@ angular.module('starter.controllers')
     TaskService.get($stateParams.taskId).then(function (data) {
       _that.task = data;
       _that.originalTask = angular.copy(data);
+      $ionicAnalytics.track('EDIT_TASK', data);
 
       // Update the penaltyLabel
       _that.penaltyLabel = (0 == _that.task.penalty ? 'Nothing here...' : _that.task.penalty + ' pts');
@@ -114,6 +116,7 @@ angular.module('starter.controllers')
   this.remove = function (task) {
     console.log('in TasksCtrl.remove ', task);
     TaskService.remove(task).then(function () {
+      $ionicAnalytics.track('DELETE_TASK', task);
       $state.reload();
     });
   };
@@ -134,6 +137,7 @@ angular.module('starter.controllers')
       };
 
       TaskService.remove(task).then(function () {
+        $ionicAnalytics.track('DELETE_TASK', task);
         $state.go('tab.tasks');
       });
     });
@@ -200,8 +204,10 @@ angular.module('starter.controllers')
       return;
     };
 
+    var ev = (_that.edit ? 'UPDATE_TASK' : 'CREATE_TASK');
     var fn = (_that.edit ? TaskService.update : TaskService.add);
     fn(_that.task).then(function () {
+      $ionicAnalytics.track(ev, _that.task);
       $state.go('tab.tasks');
     });
   };
