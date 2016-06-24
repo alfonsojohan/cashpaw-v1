@@ -41,9 +41,9 @@ angular.module('starter.controllers', [])
     /**
       * Delete the old database
       */
-    PouchDbService.db().destroy().then(function () {
-      // console.log('<<< Database destroyed...');
-    });
+    // PouchDbService.db().destroy().then(function () {
+    //   // console.log('<<< Database destroyed...');
+    // });
 
     _progVal = 0;
     // console.log('in DashCtrl.doUpdate');
@@ -55,7 +55,7 @@ angular.module('starter.controllers', [])
     }, function (err) {
       // console.log('Ionic Deploy: Update error! ', err);
     }, function (prog) {
-      // console.log('Ionic Deploy: Progress... ', prog);
+      console.log('Ionic Deploy: Progress... ', prog);
       if ((parseFloat(prog) - _progVal) >= 5.0) {
         toastr.info('Downloading... ' + prog + '%');
         _progVal = prog;
@@ -80,7 +80,7 @@ angular.module('starter.controllers', [])
         if (!hasUpdate) {
           toastr.info('Congratulations. You have the latest update.');
         } else {
-          toastr.info('Downloading update...');
+          toastr.info('Updates available. Downloading...');
           _that.doUpdate();
         };
 
