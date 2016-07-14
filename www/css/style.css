@@ -19,6 +19,8 @@
   font-style: italic;
 }
 .aj-avatar-large {
+  width: 100% !important;
+  height: 100% !important;
   max-width: 150px !important;  
   max-height: 150px !important;  
   -webkit-border-radius: 75px; /* Saf3+, Chrome */

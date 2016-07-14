@@ -2,52 +2,39 @@ angular.module('starter.controllers')
 .controller('MoneyCtrl', MoneyCtrl)
 ;
 
-function MoneyCtrl() {
+function MoneyCtrl(
+  $state,
+  $stateParams,
+  UserService,
+  MoneyService) {
 
   var _that = this;
   var _yesterday = new Date();
   _yesterday.setDate(_yesterday.getDate() - 1);
 
-  this.balance = Math.random() * (500 - 100) + 100;
-  this.total = 0.0;
-  this.transactions = [{
-    title: 'Debit Card Purchase',
-    description: 'Chatime',
-    amount: -12.55,
-    currency: 'MYR',
-    type: 'debit',
-    time: _yesterday.setHours(15,30)
-  }, {
-    title: 'Debit Card Purchase',
-    description: 'TGV Cinema',
-    amount: -24.00,
-    currency: 'MYR',
-    type: 'debit',
-    time: _yesterday.setHours(15,50)
-  }, {
-    title: 'Withdrawal',
-    description: 'ATM SCR01',
-    amount: -50.00 ,
-    currency: 'MYR',
-    type: 'debit',
-    time: _yesterday.setHours(18,30)
-  }, {
-    title: 'Cashpaw Reward',
-    description: 'From Mummy',
-    amount: 150.00 ,
-    currency: 'MYR',
-    type: 'credit',
-    time: _yesterday.setHours(18,40)
-  }, {
-    title: 'Debit Card Purchase',
-    description: "McDonald's Bandar Utama",
-    amount: -16.35 ,
-    currency: 'MYR',
-    type: 'debit',
-    time: _yesterday.setHours(15,30)
-  }];
+  var accounts = MoneyService.getAccounts();
+  this.family = UserService.users;
+  this.children = MoneyService.getChildAccounts();
 
-  for (var i = 0; i < this.transactions.length; i++) {
-    _that.total += this.transactions[i].amount;
+  if($state.is('tab.finance')) {
+      console.log('<<< MoneyCtrl: current user is: ', UserService.currentUser());
+      this.account = MoneyService.getAccount('user_dad');
+  } else if($state.is('child.finance')) {
+      console.log('<<< MoneyCtrl: current user is: ', UserService.currentUser());
+      this.account = MoneyService.getAccount('user_hermione');      
+  } else if ($state.is('tab.finance-details')) {
+    this.child = MoneyService.getAccount($stateParams.userId);
+    this.child.owner = UserService.get($stateParams.userId);
+    // this.transactions = .transactions;
+    console.log('transactions ', this.transactions);
   }
+
+  this.showDetails = function (child) {
+    console.log('showDetails', child);
+    // _that.userTransactions = child.transactions;
+    $state.go('tab.finance-details', {
+      userId: child._id
+    });
+  }
+
 };

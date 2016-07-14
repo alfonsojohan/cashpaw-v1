@@ -17,7 +17,8 @@ function PromoService() {
   var randomPoints = function () {
     var min = 100;
     var max = 1000;
-    return Math.floor(Math.random() * (max - min) + min);
+    var v = Math.floor(Math.random() * (max - min) + min);
+    return Math.round(v/10) * 10;
   };
 
   /**

@@ -238,6 +238,24 @@ angular.module('starter', [
     templateUrl: 'templates/categories.html',
     controller: 'CategoryCtrl as categoryCtrl'
   })
+  .state('tab.finance', {
+    url: '/finance',
+    views: {
+      'tab-finance': {
+        templateUrl: 'templates/finance.html',
+        controller: 'MoneyCtrl as moneyCtrl'
+      }
+    }
+  })
+  .state('tab.finance-details', {
+    url: '/finance/:userId',
+    views: {
+      'tab-finance': {
+        templateUrl: 'templates/finance-details.html',
+        controller: 'MoneyCtrl as moneyCtrl'
+      }
+    }
+  })
   /**
    * Start of child view states
    */

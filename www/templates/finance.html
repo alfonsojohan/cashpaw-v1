@@ -1,10 +1,21 @@
 <ion-view view-title="My Finance">
   <ion-content class="child-view">
-    <div class="item item-avatar item-assertive money-balance">
-      <img src="img/wallet.png">
-      Bank Balance: {{(moneyCtrl.account.balance || 0) | number : 2}}
-      <p class="money-account">Account: xxxx xxx 8888</p>
+    <div class="item item-avatar item-positive money-balance">
+      <img src="img/wallet.png"> Bank Balance: {{(moneyCtrl.account.balance || 0) | number : 2}}
+      <p class="money-account">Account: xxxx xxx 0007</p>
     </div>
+    <div class="row">
+      <div class="col col-50 item item-avatar-right" ng-repeat="child in moneyCtrl.children" ng-click="moneyCtrl.showDetails(child)">
+        <img ng-src="{{child.img}}">
+        {{child.name}}
+        <p>Bank Balance</p>
+       <p>{{child.balance | number : 2}}</p>
+      </div>
+    </div>
+   <div class="padding">
+     <button class="button button-block button-calm">Quick Transfer</button>
+   </div>
+
     <p class="task-points-small">Last 10 transactions</p>
     <ion-list>
       <ion-item ng-repeat="item in moneyCtrl.account.transactions" ng-class="{'money-credit' : item.type == 'credit'}">
@@ -21,5 +32,6 @@
         </div>
       </ion-item>
     </ion-list>
+
   </ion-content>
 </ion-view>
