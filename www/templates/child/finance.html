@@ -7,7 +7,7 @@
     </div>
     <p class="task-points-small">Last 10 transactions</p>
     <ion-list>
-      <ion-item ng-repeat="item in moneyCtrl.account.transactions" ng-class="{'money-credit' : item.type == 'credit'}">
+      <ion-item ng-repeat="item in moneyCtrl.account.transactions | orderBy: '-time'" ng-class="{'money-credit' : item.type == 'credit'}">
         <div class="row row-no-padding">
           <div class="col col-75">
             <div class="money-title">{{item.title}}</div>

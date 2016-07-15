@@ -1,8 +1,28 @@
 <ion-view view-title="{{moneyCtrl.child.owner.name}}">
   <ion-content class="child-view">
-   <p class="task-points-small">Last 10 transactions</p>
+    <div class="item item-avatar-right">
+      <img ng-src="{{moneyCtrl.child.owner.img}}"> {{moneyCtrl.child.owner.name}}
+      <p>Bank Balance</p>
+      <p>{{moneyCtrl.child.balance | number : 2}}</p>
+    </div>
+
+    <div class="task-points-small">Quick Transfer</div>
+    <div class="row">
+      <div class="col">
+        <button class="button button-calm button-block" ng-click="moneyCtrl.doTransfer(moneyCtrl.child, 50)">$50</button>
+      </div>
+      <div class="col">
+        <button class="button button-assertive button-block" ng-click="moneyCtrl.doTransfer(moneyCtrl.child, 100)">$100</button>
+      </div>
+      <div class="col">
+        <button class="button button-royal button-block" ng-click="moneyCtrl.doTransfer(moneyCtrl.child, -1)">Custom..</button>
+      </div>
+    </div>
+
+    <p class="task-points-small">Last 10 transactions: {{moneyCtrl.child.owner.name}}
+    </p>
     <ion-list>
-      <ion-item ng-repeat="item in moneyCtrl.child.transactions" ng-class="{'money-credit' : item.type == 'credit'}">
+      <ion-item ng-repeat="item in moneyCtrl.child.transactions |  orderBy: '-time'" ng-class="{'money-credit' : item.type == 'credit'}">
         <div class="row row-no-padding">
           <div class="col col-75">
             <div class="money-title">{{item.title}}</div>
@@ -15,5 +35,6 @@
           </div>
         </div>
       </ion-item>
-    </ion-list>  </ion-content>
+    </ion-list>
+  </ion-content>
 </ion-view>

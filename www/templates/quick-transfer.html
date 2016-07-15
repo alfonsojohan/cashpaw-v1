@@ -1,0 +1,13 @@
+<ion-view view-title="{{moneyCtrl.child.owner.name}}">
+  <ion-content class="child-view">
+    <div class="text-center">Transfer To:</div>
+    <a class="button button-icon item-avatar button-block button-large" 
+      ng-click="moneyCtrl.selectUser()">
+      <img ng-src="{{taskCtrl.task.assignee.img || 'img/smiley-flat.png'}}">&nbsp;
+      <span ng-show="taskCtrl.task.assignee">{{taskCtrl.task.assignee.name}}</span>
+      <span ng-show="!taskCtrl.task.assignee">No one here...</span>
+    </a>
+
+    Amount:
+  </ion-content>
+</ion-view>

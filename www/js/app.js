@@ -240,10 +240,12 @@ angular.module('starter', [
   })
   .state('tab.finance', {
     url: '/finance',
+    // cache: false,
     views: {
       'tab-finance': {
         templateUrl: 'templates/finance.html',
-        controller: 'MoneyCtrl as moneyCtrl'
+        controller: 'MoneyCtrl as moneyCtrl',
+        // cache: false
       }
     }
   })
@@ -253,6 +255,14 @@ angular.module('starter', [
       'tab-finance': {
         templateUrl: 'templates/finance-details.html',
         controller: 'MoneyCtrl as moneyCtrl'
+      }
+    }
+  })
+  .state('tab.quick-transfer', {
+    url: '/quick-transfer',
+    views: {
+      'tab-finance': {
+        templateUrl: 'templates/quick-transfer.html'
       }
     }
   })

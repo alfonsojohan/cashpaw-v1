@@ -43,7 +43,7 @@ function MoneyService(
     amount: -16.35 ,
     currency: 'MYR',
     type: 'debit',
-    time: _yesterday.setHours(15,30)
+    time: _yesterday.setHours(19,15)
   }];
 
   var accounts = [{
@@ -158,18 +158,6 @@ function MoneyService(
    * Update the owner data and also update the children array
    */
   this.family.forEach(function(el) {
-
-    // if child account push to the children array
-    if('child' == el.role) {
-      for(i = 0; i < accounts.length; i++) {
-        if(accounts[i].owner._id == el._id) {
-          el.balance = accounts[i].balance; 
-          break;         
-        }
-      }
-      _that.children.push(el);
-    }
-
     if (false !== (acc = _that.getAccount(el._id))) {
       acc.owner = el;
     } 
@@ -186,6 +174,58 @@ function MoneyService(
   };
 
   this.getChildAccounts = function () {
+    
+    _that.children = [];
+    this.family.forEach(function(el) {
+
+      // if child account push to the children array
+      if('child' == el.role) {
+        for(i = 0; i < accounts.length; i++) {
+          if(accounts[i].owner._id == el._id) {
+            el.balance = accounts[i].balance; 
+            break;         
+          }
+        }
+        _that.children.push(el);
+      }
+    });
+
     return _that.children;
+  }
+
+  this.doTransfer = function (fromAcc, toAcc, amount) {
+    console.log('MoneyService.doTransfer', fromAcc, toAcc, amount);
+
+    /**
+     * Get source account and check for funds
+     */
+    var srcAcc = this.getAccount(fromAcc);
+    var dest = this.getAccount(toAcc);
+
+    if (srcAcc.balance < amount) {
+      throw 'Insufficient funds for transfer';
+    }
+
+    srcAcc.balance -= amount;
+    srcAcc.transactions.push({
+      title: 'Quick Transfer',
+      description: 'To ' + dest.owner.name,
+      amount: -amount ,
+      currency: 'MYR',
+      type: 'debit',
+      time: new Date()
+    });
+
+    dest.balance += amount;
+    dest.transactions.push({
+      title: 'Cashpaw Reward',
+      description: 'From ' + srcAcc.owner.name,
+      amount: amount,
+      currency: 'MYR',
+      type: 'credit',
+      time: new Date()
+    });
+
+    return dest.balance;
   }
 };
